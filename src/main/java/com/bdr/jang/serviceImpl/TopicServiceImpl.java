@@ -21,12 +21,10 @@ public class TopicServiceImpl implements TopicService {
     public TopicServiceImpl (TopicRepository topicRepository, TopicMapper topicMapper) {
         this.topicRepository = topicRepository;
         this.topicMapper = topicMapper;
-
     }
 
     /**
-     * Méthode interne utilisée par les mappers ou la logique métier,
-     * PAS exposée dans l'interface (normal, car DTO vers l'extérieur).
+     * Méthode interne utilisée par les mappers ou la logique métier
      */
     @Transactional(readOnly = true)
     public Topic findTopicEntityByName(String name) {
