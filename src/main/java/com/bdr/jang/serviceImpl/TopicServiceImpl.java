@@ -1,8 +1,8 @@
 package com.bdr.jang.serviceImpl;
 
-import com.bdr.jang.dto.TopicDTO;
-import com.bdr.jang.mapper.TopicMapper;
-import com.bdr.jang.model.Topic;
+import com.bdr.jang.entities.dto.TopicDTO;
+import com.bdr.jang.entities.mapper.TopicMapper;
+import com.bdr.jang.entities.model.Topic;
 import com.bdr.jang.repository.TopicRepository;
 import com.bdr.jang.service.TopicService;
 import jakarta.persistence.EntityNotFoundException;

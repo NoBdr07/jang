@@ -1,7 +1,7 @@
-package com.bdr.jang.mapper;
+package com.bdr.jang.entities.mapper;
 
-import com.bdr.jang.dto.TopicDTO;
-import com.bdr.jang.model.Topic;
+import com.bdr.jang.entities.dto.TopicDTO;
+import com.bdr.jang.entities.model.Topic;
 import org.springframework.stereotype.Component;
 
 @Component

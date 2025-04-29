@@ -1,6 +1,6 @@
 package com.bdr.jang.controller;
 
-import com.bdr.jang.dto.QuestionDTO;
+import com.bdr.jang.entities.dto.QuestionDTO;
 import com.bdr.jang.service.QuestionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.bdr.jang.dto;
+package com.bdr.jang.entities.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,8 @@
-package com.bdr.jang.mapper;
+package com.bdr.jang.entities.mapper;
 
-import com.bdr.jang.dto.UserDTO;
-import com.bdr.jang.model.CreateUserRequest;
-import com.bdr.jang.model.User;
+import com.bdr.jang.entities.dto.UserDTO;
+import com.bdr.jang.entities.model.CreateUserRequest;
+import com.bdr.jang.entities.model.User;
 import org.springframework.stereotype.Component;
 
 @Component

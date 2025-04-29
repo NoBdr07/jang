@@ -1,4 +1,4 @@
-package com.bdr.jang.model;
+package com.bdr.jang.entities.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

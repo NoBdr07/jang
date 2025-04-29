@@ -1,13 +1,11 @@
 package com.bdr.jang.controller;
 
-import com.bdr.jang.dto.UserDTO;
-import com.bdr.jang.model.CreateUserRequest;
+import com.bdr.jang.entities.dto.UserDTO;
+import com.bdr.jang.entities.model.CreateUserRequest;
 import com.bdr.jang.service.UserService;
 import com.bdr.jang.util.JwtUtils;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;

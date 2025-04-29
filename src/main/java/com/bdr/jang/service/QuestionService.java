@@ -1,6 +1,6 @@
 package com.bdr.jang.service;
 
-import com.bdr.jang.dto.QuestionDTO;
+import com.bdr.jang.entities.dto.QuestionDTO;
 
 import java.util.List;
 
