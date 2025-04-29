@@ -6,6 +6,8 @@ import com.bdr.jang.entities.model.Question;
 import com.bdr.jang.repository.QuestionRepository;
 import com.bdr.jang.service.QuestionService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +25,9 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionDTO> getAllQuestions() {
-        return questionRepository.findAll()
-                .stream()
-                .map(questionMapper::mapToDTO)
-                .collect(Collectors.toList());
+    public Page<QuestionDTO> getAllQuestions(Pageable pageable) {
+        return questionRepository.findAll(pageable)
+                .map(questionMapper::mapToDTO);
     }
 
     @Override

@@ -5,14 +5,17 @@ import com.bdr.jang.entities.mapper.QuestionMapper;
 import com.bdr.jang.entities.model.Question;
 import com.bdr.jang.entities.model.Topic;
 import com.bdr.jang.repository.QuestionRepository;
-import org.hibernate.validator.constraints.Mod10Check;
-import org.junit.jupiter.api.AfterEach;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +41,6 @@ class QuestionServiceImplTest {
     private Topic t1;
     private QuestionDTO q1DTO, q2DTO;
     private List<Question> questions;
-    private List<QuestionDTO> questionsDTO;
 
     @BeforeEach
     void setUp() {
@@ -83,28 +85,40 @@ class QuestionServiceImplTest {
                 .topicName("Topic1")
                 .build();
 
-        questionsDTO = List.of(q1DTO, q2DTO);
     }
 
     @Test
-    void getAllQuestions_shouldReturnListOfDTOs() {
+    void getAllQuestions_shouldReturnPagedDTOs() {
         // GIVEN
-        when(questionRepository.findAll()).thenReturn(questions);
+        Pageable pageable = PageRequest.of(0, 2);
+        Page<Question> questionPage = new PageImpl<>(questions, pageable, questions.size());
+
+        when(questionRepository.findAll(pageable)).thenReturn(questionPage);
         when(questionMapper.mapToDTO(q1)).thenReturn(q1DTO);
         when(questionMapper.mapToDTO(q2)).thenReturn(q2DTO);
 
         // WHEN
-        List<QuestionDTO> result = questionService.getAllQuestions();
+        Page<QuestionDTO> result = questionService.getAllQuestions(pageable);
 
         // THEN
-        assertThat(result).hasSize(2).containsExactly(q1DTO, q2DTO);
-        verify(questionRepository, times(1)).findAll();
+        // Le contenu de la page
+        assertThat(result.getContent())
+                .hasSize(2)
+                .containsExactly(q1DTO, q2DTO);
+        // Les méta-données de pagination
+        assertThat(result.getTotalElements()).isEqualTo(2);
+        assertThat(result.getTotalPages()).isEqualTo(1);
+        assertThat(result.getNumber()).isEqualTo(0);
+        assertThat(result.getSize()).isEqualTo(2);
+
+        verify(questionRepository, times(1)).findAll(pageable);
         verify(questionMapper, times(1)).mapToDTO(q1);
         verify(questionMapper, times(1)).mapToDTO(q2);
+        verifyNoMoreInteractions(questionRepository, questionMapper);
     }
 
     @Test
-    void getQuestionById() {
+    void getQuestionById_shouldReturnQuestionDTO() {
         // GIVEN
         when(questionRepository.findById(1L)).thenReturn(Optional.of(q1));
         when(questionMapper.mapToDTO(q1)).thenReturn(q1DTO);
@@ -119,16 +133,48 @@ class QuestionServiceImplTest {
     }
 
     @Test
-    void createQuestion() {
+    void getQuestionById_shouldThrowWhenNotFound() {
         // GIVEN
+        when(questionRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // WHEN
+        // WHEN & THEN
+        EntityNotFoundException ex = assertThrows(
+                EntityNotFoundException.class, () -> questionService.getQuestionById(1L)
+        );
 
-        // THEN
+        assertTrue(ex.getMessage().contains("Question not found with id : 1"));
+        verify(questionRepository).findById(1L);
 
     }
 
     @Test
-    void deleteQuestion() {
+    void createQuestion_shouldReturnQuestionDTO() {
+        // GIVEN
+        when(questionMapper.mapToEntity(q1DTO)).thenReturn(q1);
+        when(questionRepository.save(q1)).thenReturn(q1);
+        when(questionMapper.mapToDTO(q1)).thenReturn(q1DTO);
+
+        // WHEN
+        QuestionDTO result = questionService.createQuestion(q1DTO);
+
+        // THEN
+        assertEquals(result, q1DTO);
+        verify(questionMapper, times(1)).mapToEntity(q1DTO);
+        verify(questionMapper, times(1)).mapToDTO(q1);
+        verify(questionRepository, times(1)).save(q1);
+    }
+
+    @Test
+    void deleteQuestion_shouldInvokeRepositoryDeleteById() {
+        // GIVEN
+        Long idToDelete = 42L;
+        doNothing().when(questionRepository).deleteById(idToDelete);
+
+        // WHEN
+        questionService.deleteQuestion(idToDelete);
+
+        // THEN
+        verify(questionRepository, times(1)).deleteById(idToDelete);
+
     }
 }
