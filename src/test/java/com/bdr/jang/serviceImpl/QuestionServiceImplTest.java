@@ -101,7 +101,6 @@ class QuestionServiceImplTest {
         Page<QuestionDTO> result = questionService.getAllQuestions(pageable);
 
         // THEN
-        // Le contenu de la page
         assertThat(result.getContent())
                 .hasSize(2)
                 .containsExactly(q1DTO, q2DTO);
