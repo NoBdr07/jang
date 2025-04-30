@@ -8,6 +8,6 @@ import jakarta.servlet.http.Cookie;
 public interface UserService {
 
     UserDTO register(CreateUserRequest req);
-    Cookie login(LoginRequest req);
+    String login(LoginRequest req);
 
 }

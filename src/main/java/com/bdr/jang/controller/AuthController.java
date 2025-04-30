@@ -1,9 +1,11 @@
 package com.bdr.jang.controller;
 
 import com.bdr.jang.entities.dto.UserDTO;
+import com.bdr.jang.entities.payload.AuthResponse;
 import com.bdr.jang.entities.payload.CreateUserRequest;
 import com.bdr.jang.entities.payload.LoginRequest;
 import com.bdr.jang.service.UserService;
+import com.bdr.jang.util.JwtUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -20,9 +22,11 @@ import java.net.URI;
 public class AuthController {
 
     private final UserService userService;
+    private final JwtUtils jwtUtils;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, JwtUtils jwtUtils) {
         this.userService = userService;
+        this.jwtUtils = jwtUtils;
     }
 
     @PostMapping("/register")
@@ -33,9 +37,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginRequest req, HttpServletResponse response) {
-        Cookie jwtCookie = userService.login(req);
-        response.addCookie(jwtCookie);
-        return ResponseEntity.ok("Login successfull");
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginRequest req, HttpServletResponse response) {
+        String token = userService.login(req);
+        Cookie cookie = jwtUtils.createCookie("jwt", token, 24 * 60 * 60, false);
+        response.addCookie(cookie);
+        AuthResponse body = new AuthResponse(token, 86400L);
+        return ResponseEntity.ok(body);
     }
 }
