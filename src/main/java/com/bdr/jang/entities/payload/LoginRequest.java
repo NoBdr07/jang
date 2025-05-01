@@ -2,8 +2,6 @@ package com.bdr.jang.entities.payload;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
 public record LoginRequest(
         @NotBlank @Size(min=3, max=20) String username,
