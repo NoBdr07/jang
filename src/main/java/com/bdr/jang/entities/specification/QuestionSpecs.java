@@ -22,7 +22,7 @@ public class QuestionSpecs {
             if (topicNames == null || topicNames.isEmpty()) {
                 return cb.conjunction();
             }
-            Join<Question, Topic> joinTopics = root.join("topics", JoinType.INNER);
+            Join<Question, Topic> joinTopics = root.join("topic", JoinType.INNER);
             return joinTopics.get("name").in(topicNames);
         };
     }

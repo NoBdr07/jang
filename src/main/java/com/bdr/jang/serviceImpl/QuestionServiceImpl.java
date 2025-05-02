@@ -3,11 +3,13 @@ package com.bdr.jang.serviceImpl;
 import com.bdr.jang.entities.dto.QuestionDTO;
 import com.bdr.jang.entities.mapper.QuestionMapper;
 import com.bdr.jang.entities.model.Question;
+import com.bdr.jang.entities.specification.QuestionSpecs;
 import com.bdr.jang.repository.QuestionRepository;
 import com.bdr.jang.service.QuestionService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,6 +49,14 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void deleteQuestion(Long id) {
         questionRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<QuestionDTO> getQuestionsByFilter(Integer niveau, List<String> topics, Pageable pageable) {
+        Specification<Question> spec = Specification.where(QuestionSpecs.hasLevel(niveau))
+                .and(QuestionSpecs.hasTopics(topics));
+        return questionRepository.findAll(spec, pageable)
+                .map(questionMapper::mapToDTO);
     }
 
 
