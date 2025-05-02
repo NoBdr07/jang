@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,9 +39,10 @@ class QuestionServiceImplTest {
 
     // Attributs de test partagés
     private Question q1, q2;
-    private Topic t1;
+    private Topic t1, t2;
     private QuestionDTO q1DTO, q2DTO;
     private List<Question> questions;
+    private List<QuestionDTO> questionsDTO;
 
     @BeforeEach
     void setUp() {
@@ -48,6 +50,11 @@ class QuestionServiceImplTest {
         t1 = Topic.builder()
                 .id(1L)
                 .name("Topic1")
+                .build();
+
+        t2 = Topic.builder()
+                .id(2L)
+                .name("Topic2")
                 .build();
 
         q1 = Question.builder()
@@ -63,8 +70,9 @@ class QuestionServiceImplTest {
                 .title("Titre de la question 2 ?")
                 .answer("Réponse de la quesion 2.")
                 .level(1)
-                .topic(t1)
+                .topic(t2)
                 .build();
+
 
         questions = List.of(q1, q2);
 
@@ -82,9 +90,10 @@ class QuestionServiceImplTest {
                 .title("Titre de la question 2 ?")
                 .answer("Réponse de la quesion 2.")
                 .level(1)
-                .topicName("Topic1")
+                .topicName("Topic2")
                 .build();
 
+        questionsDTO = List.of(q1DTO, q2DTO);
     }
 
     @Test
@@ -174,6 +183,27 @@ class QuestionServiceImplTest {
 
         // THEN
         verify(questionRepository, times(1)).deleteById(idToDelete);
+    }
 
+    @Test
+    void getQuestionsByFilter_shouldReturnFilteredQuestions() {
+        // GIVEN
+        Integer niveau = 1;
+        List<String> topics = List.of("Topic1", "Topic2");
+
+        Pageable pageable = PageRequest.of(0, 2);
+        Page<Question> questionPage = new PageImpl<>(questions, pageable, questions.size());
+
+        Page<QuestionDTO> questionDTOPage = new PageImpl<>(List.of(q1DTO, q2DTO), pageable, questions.size());
+
+        when(questionRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(questionPage);
+        when(questionMapper.mapToDTO(q1)).thenReturn(q1DTO);
+        when(questionMapper.mapToDTO(q2)).thenReturn(q2DTO);
+
+        // WHEN
+        Page<QuestionDTO> result = questionService.getQuestionsByFilter(niveau, topics, pageable);
+
+        // THEN
+        assertEquals(questionDTOPage, result);
     }
 }

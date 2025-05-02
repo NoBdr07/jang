@@ -11,6 +11,7 @@ import lombok.*;
                 @UniqueConstraint(columnNames = "username")
         }
 )
+@Data
 @Getter
 @Setter
 @AllArgsConstructor
