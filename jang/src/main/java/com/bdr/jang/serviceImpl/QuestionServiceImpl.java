@@ -13,7 +13,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -52,7 +51,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Page<QuestionDTO> getQuestionsByFilter(Integer niveau, List<String> topics, Pageable pageable) {
+    public Page<QuestionDTO> getQuestionsByFilter
+            (Integer niveau, List<String> topics, Pageable pageable) {
         Specification<Question> spec = Specification.where(QuestionSpecs.hasLevel(niveau))
                 .and(QuestionSpecs.hasTopics(topics));
         return questionRepository.findAll(spec, pageable)
