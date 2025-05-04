@@ -1,77 +1,51 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# ─── Java / Maven ────────────────────────────────────────────────
+# ignore tous les dossiers target (backend ou dans src)
+/**/target/
+/**/build/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# conserve le wrapper Maven
+!**/.mvn/wrapper/maven-wrapper.jar
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+# ─── Node / Angular ─────────────────────────────────────────────
+# dependencies & output (frontend ou tout autre projet JS)
+**/node_modules/
+/**/dist/
+/**/tmp/
+/**/out-tsc/
+/**/.angular/cache/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# logs JS
+npm-debug.log*
+yarn-error.log*
 
-### VS Code ###
-.vscode/
-
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
-
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
-
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
-
-# IDEs and editors
+# ─── IDEs et éditeurs ──────────────────────────────────────────
+# IntelliJ, STS, Eclipse…
 .idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+/*.iml
+/*.ipr
+/*.iws
+/.classpath
+/.project
+/.settings/
 
-# Visual Studio Code
-.vscode/*
+# VS Code workspace
+.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
 
-# Miscellaneous
-/.angular/cache
-.sass-cache/
+# autres éditeurs
+*.sublime-workspace
+.c9/
+
+# ─── Divers ───────────────────────────────────────────────────
+# coverage, saas, etc.
+**/coverage/
+/**/.sass-cache/
 /connect.lock
-/coverage
-/libpeerconnection.log
 testem.log
-/typings
 
-# System files
+# fichiers système
 .DS_Store
 Thumbs.db
-
