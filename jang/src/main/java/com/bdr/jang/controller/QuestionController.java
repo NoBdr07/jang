@@ -38,11 +38,11 @@ public class QuestionController {
 
     @GetMapping("/filter")
     public ResponseEntity<Page<QuestionDTO>> getFilteredQuestions(
-            @RequestParam(required = false) Integer niveau,
+            @RequestParam(required = false) List<Integer> niveaux,
             @RequestParam(required = false) List<String> topics,
             Pageable pageable
     ) {
-        Page<QuestionDTO> filteredQuestions = questionService.getQuestionsByFilter(niveau, topics, pageable);
+        Page<QuestionDTO> filteredQuestions = questionService.getQuestionsByFilter(niveaux, topics, pageable);
         return ResponseEntity.ok(filteredQuestions);
     }
 

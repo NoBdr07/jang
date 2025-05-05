@@ -1,41 +1,76 @@
+// src/styles.scss
 
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
+@use 'sass:map';
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-@include mat.core();
+// 1) Construire une palette complète (à partir de grey)  
+$base-grey: mat.define-palette(mat.$grey-palette, 200, 100, 400);
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$jang-front-primary: mat.define-palette(mat.$indigo-palette);
-$jang-front-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-
-// The warn palette is optional (defaults to red).
-$jang-front-warn: mat.define-palette(mat.$red-palette);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$jang-front-theme: mat.define-light-theme((
-  color: (
-    primary: $jang-front-primary,
-    accent: $jang-front-accent,
-    warn: $jang-front-warn,
-  ),
-  typography: mat.define-typography-config(),
-  density: 0
+// 2) Surcharger uniquement les nuances qui t’intéressent  
+$jang-front-palette: map.merge($base-grey, (
+  50 : #EBE8E3,  // très clair
+  100: #B2B1A7,  // clair
+  200: #8F5381,  // couleur principale
+  300: #286E70,  // accent  
+  400: #10111A   // fond global (le plus foncé)
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
+// 3) Palette warn (rouge par défaut)  
+$jang-front-warn: mat.define-palette(mat.$red-palette);
+
+// 4) Créer ton thème “light”  
+$jang-front-theme: mat.define-light-theme((
+  color: (
+    primary: $jang-front-palette,
+    accent : $jang-front-palette,
+    warn   : $jang-front-warn,
+  ),
+  // facultatif : tu peux aussi définir typography et density
+  typography: mat.define-typography-config(),
+  density: 0,
+  background: (
+    status-bar: mat.get-color-from-palette($jang-front-palette, 400),
+    app-bar   : mat.get-color-from-palette($jang-front-palette, 400),
+    background: mat.get-color-from-palette($jang-front-palette, 400), // fond global
+    card      : mat.get-color-from-palette($jang-front-palette, 400),
+    dialog    : mat.get-color-from-palette($jang-front-palette, 400),
+    hover     : mat.get-color-from-palette($jang-front-palette, 300),
+    tooltip   : mat.get-color-from-palette($jang-front-palette, 300),
+  )
+));
+
+// 5) Injection des styles Material  
+@include mat.core();
 @include mat.all-component-themes($jang-front-theme);
 
-/* You can add global styles to this file, and also import other style files */
+// 6) Tes styles globaux  
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: mat.get-color-from-palette($jang-front-palette, 400);
+  color:            mat.get-color-from-palette($jang-front-palette, 50);
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* === Variables de couleur === */
+:root {
+  --my-dark-color:  #10111A; /* fonds d’app / app-bar / status-bar */
+  --my-light-color: #EBE8E3; /* surfaces légères */
+  --my-blue-color:  #286E70; /* accent (survols, boutons) */
+  --my-green-color: #B2B1A7; /* arrière-plans de dialogues */
+  --my-pink-color:  #8F5381; /* couleur principale */
+}
+
+/* === Classes utilitaires Texte === */
+.text-my-dark-color  { color: var(--my-dark-color); }
+.text-my-light-color { color: var(--my-light-color); }
+.text-my-blue-color  { color: var(--my-blue-color); }
+.text-my-green-color { color: var(--my-green-color); }
+.text-my-pink-color  { color: var(--my-pink-color); }
+
+/* === Classes utilitaires Fond === */
+.bg-my-dark-color  { background-color: var(--my-dark-color); }
+.bg-my-light-color { background-color: var(--my-light-color); }
+.bg-my-blue-color  { background-color: var(--my-blue-color); }
+.bg-my-green-color { background-color: var(--my-green-color); }
+.bg-my-pink-color  { background-color: var(--my-pink-color); }

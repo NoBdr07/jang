@@ -52,8 +52,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Page<QuestionDTO> getQuestionsByFilter
-            (Integer niveau, List<String> topics, Pageable pageable) {
-        Specification<Question> spec = Specification.where(QuestionSpecs.hasLevel(niveau))
+            (List<Integer> niveaux, List<String> topics, Pageable pageable) {
+        Specification<Question> spec = Specification.where(QuestionSpecs.hasLevel(niveaux))
                 .and(QuestionSpecs.hasTopics(topics));
         return questionRepository.findAll(spec, pageable)
                 .map(questionMapper::mapToDTO);

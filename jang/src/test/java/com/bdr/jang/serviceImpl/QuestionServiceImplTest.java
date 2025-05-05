@@ -188,7 +188,7 @@ class QuestionServiceImplTest {
     @Test
     void getQuestionsByFilter_shouldReturnFilteredQuestions() {
         // GIVEN
-        Integer niveau = 1;
+        List<Integer> niveaux = List.of(1);
         List<String> topics = List.of("Topic1", "Topic2");
 
         Pageable pageable = PageRequest.of(0, 2);
@@ -201,7 +201,7 @@ class QuestionServiceImplTest {
         when(questionMapper.mapToDTO(q2)).thenReturn(q2DTO);
 
         // WHEN
-        Page<QuestionDTO> result = questionService.getQuestionsByFilter(niveau, topics, pageable);
+        Page<QuestionDTO> result = questionService.getQuestionsByFilter(niveaux, topics, pageable);
 
         // THEN
         assertEquals(questionDTOPage, result);

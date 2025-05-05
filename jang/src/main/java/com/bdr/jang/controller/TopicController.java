@@ -1,7 +1,6 @@
 package com.bdr.jang.controller;
 
 import com.bdr.jang.entities.dto.TopicDTO;
-import com.bdr.jang.entities.model.Topic;
 import com.bdr.jang.service.TopicService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
