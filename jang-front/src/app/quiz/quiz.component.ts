@@ -12,15 +12,19 @@ import { QuestionService } from '../services/question-service';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FilterComponent } from "../filter/filter.component";
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, FilterComponent],
+  imports: [CommonModule, MatButtonModule, FilterComponent, MatCardModule],
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.scss',
 })
 export class QuizComponent {
+  // Nombre max de questions chargées
+  private maxQuestions = 20 ;
+
   // Streams de critère
   private niveau$ = new BehaviorSubject<number[]>([]);
   private topics$ = new BehaviorSubject<string[]>([]);
@@ -33,7 +37,7 @@ export class QuizComponent {
     this.page$,
   ]).pipe(
     switchMap(([niveaux, topics, page]) =>
-      this.questionService.getFilteredQuestions(niveaux, topics, page, 1)
+      this.questionService.getFilteredQuestions(niveaux, topics, page, this.maxQuestions)
     )
   );
 
@@ -43,7 +47,7 @@ export class QuizComponent {
 
   constructor(private questionService: QuestionService) {}
 
-  // Méthodes appelées par le template 
+  // Méthodes appelées par le composant enfant filter
   onFilterChange(filter: {niveau: number[]; topics: string[]}) {
     this.niveau$.next(filter.niveau);
     this.topics$.next(filter.topics);
@@ -54,7 +58,5 @@ export class QuizComponent {
     const nextPage = this.page$.value + 1;
     this.page$.next(nextPage);
   }
-
-
 
 }

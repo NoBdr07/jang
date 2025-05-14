@@ -10,17 +10,16 @@ import java.util.List;
 
 public class QuestionSpecs {
 
-    public static Specification<Question> hasLevel(List<Integer> niveaux) {
+    public static Specification<Question> hasLevels(List<Integer> niveaux) {
         return (root, query, cb) -> {
-            // pas de filtre si la liste est vide ou nulle
             if (niveaux == null || niveaux.isEmpty()) {
+                // pas de filtre si aucune sélection
                 return cb.conjunction();
             }
-            // niveau IN ( … )
+            // WHERE level IN (:niveaux)
             return root.get("level").in(niveaux);
         };
     }
-
 
     public static Specification<Question> hasTopics(List<String> topicNames) {
         return (root, query, cb) -> {

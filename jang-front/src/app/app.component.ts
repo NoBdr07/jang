@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { QuizComponent } from "./quiz/quiz.component";
 
 @Component({
@@ -10,5 +9,5 @@ import { QuizComponent } from "./quiz/quiz.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'jang-front';
+  title = 'jang';
 }

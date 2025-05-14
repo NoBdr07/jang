@@ -1,1 +1,27 @@
-<p>filter works!</p>
+<div class="filter-section">
+  <label class="filter-label">Niveaux</label>
+  <mat-button-toggle-group multiple>
+    <mat-button-toggle
+      *ngFor="let n of niveaux"
+      [value]="n"
+      [checked]="selectedNiveaux.includes(n)"
+      (click)="toggleNiveau(n)"
+    >
+      Niveau {{ n }}
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+<div class="filter-section">
+  <label class="filter-label">Sujets</label>
+  <mat-chip-listbox multiple>
+    <mat-chip-option
+      *ngFor="let t of topics$ | async"
+      [value]="t.name"
+      [selected]="selectedTopics.includes(t.name)"
+      (click)="toggleTopic(t.name)"
+    >
+      {{ t.name }}
+    </mat-chip-option>
+  </mat-chip-listbox>
+</div>

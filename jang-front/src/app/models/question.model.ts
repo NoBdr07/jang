@@ -3,5 +3,5 @@ export interface QuestionDTO {
     title : string;
     answer: string;
     level: number;
-    topic: string;
+    topicName: string;
 }
