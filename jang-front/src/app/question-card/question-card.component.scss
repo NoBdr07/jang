@@ -1,0 +1,23 @@
+mat-card {
+  max-width: 700px;
+  height: fit-content;
+  width: 40vw;
+  background-color: var(--my-green-color);
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-card-header {
+  width: 100%;
+}
+
+::ng-deep .mat-mdc-card-header-text {
+  width: 100%;
+}
+
+mat-card-title {
+  font-variant: small-caps;
+  justify-content: space-around;
+  display: flex;
+  width: 100%;
+}

@@ -1,25 +1,12 @@
-<app-filter (selectionChange)="onFilterChange($event)"></app-filter>
+<h1 id="main-title">JANG</h1>
 
-@if (questionsPage$ | async; as page) {
-  <h3>Questions chargées ({{ page.content.length }})</h3>
+<div class="global-container">
+  <app-filter (selectionChange)="onFilterChange($event)"></app-filter>
 
-  @for (q of page.content; track q.id; let i = $index) {
-    <mat-card class="question-debug">
-      <mat-card-header>
-        <mat-card-title>Question {{ i + 1 }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p><strong>Q:</strong> {{ q.title }}</p>
-        <p><strong>R:</strong> {{ q.answer }}</p>
-        <p class="meta">
-          Niveau : {{ q.level }} —  
-          Topics : {{ q.topicName }}
-        </p>
-      </mat-card-content>
-    </mat-card>
-  } @empty {
-    <p>Aucune question trouvée pour ces critères.</p>
+  @if (currentQuestion$ | async; as current) {
+  <app-question-card
+    (nextQuestion)="nextQuestion()"
+    [question]="current"
+  ></app-question-card>
   }
-} @else {
-  <p>Chargement des questions…</p>
-}
+</div>

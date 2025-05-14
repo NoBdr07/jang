@@ -1,75 +1,109 @@
 // src/styles.scss
 
-@use 'sass:map';
-@use '@angular/material' as mat;
+@use "sass:map";
+@use "@angular/material" as mat;
 
-// 1) Construire une palette complète (à partir de grey)  
+// 1) Construire une palette complète (à partir de grey)
 $base-grey: mat.define-palette(mat.$grey-palette, 200, 100, 400);
 
-// 2) Surcharger uniquement les nuances qui t’intéressent  
-$jang-front-palette: map.merge($base-grey, (
-  50 : #EBE8E3,  // très clair
-  100: #B2B1A7,  // clair
-  200: #8F5381,  // couleur principale
-  300: #286E70,  // accent  
-  400: #10111A   // fond global (le plus foncé)
-));
+// 2) Surcharger uniquement les nuances qui t’intéressent
+$jang-front-palette: map.merge(
+  $base-grey,
+  (
+    50: #ebe8e3,
+    // très clair
+    100: #b2b1a7,
+    // clair
+    200: #8f5381,
+    // couleur principale
+    300: #286e70,
+    // accent
+    400: #10111a // fond global (le plus foncé),
+  )
+);
 
-// 3) Palette warn (rouge par défaut)  
+// 3) Palette warn (rouge par défaut)
 $jang-front-warn: mat.define-palette(mat.$red-palette);
 
-// 4) Créer ton thème “light”  
-$jang-front-theme: mat.define-light-theme((
-  color: (
-    primary: $jang-front-palette,
-    accent : $jang-front-palette,
-    warn   : $jang-front-warn,
-  ),
-  // facultatif : tu peux aussi définir typography et density
-  typography: mat.define-typography-config(),
-  density: 0,
-  background: (
-    status-bar: mat.get-color-from-palette($jang-front-palette, 400),
-    app-bar   : mat.get-color-from-palette($jang-front-palette, 400),
-    background: mat.get-color-from-palette($jang-front-palette, 400), // fond global
-    card      : mat.get-color-from-palette($jang-front-palette, 400),
-    dialog    : mat.get-color-from-palette($jang-front-palette, 400),
-    hover     : mat.get-color-from-palette($jang-front-palette, 300),
-    tooltip   : mat.get-color-from-palette($jang-front-palette, 300),
+// 4) Créer ton thème “light”
+$jang-front-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $jang-front-palette,
+      accent: $jang-front-palette,
+      warn: $jang-front-warn,
+    ),
+    // facultatif : tu peux aussi définir typography et density
+    typography: mat.define-typography-config(),
+    density: 0,
+    background: (
+      status-bar: mat.get-color-from-palette($jang-front-palette, 400),
+      app-bar: mat.get-color-from-palette($jang-front-palette, 400),
+      background: mat.get-color-from-palette($jang-front-palette, 400),
+      // fond global
+      card: mat.get-color-from-palette($jang-front-palette, 400),
+      dialog: mat.get-color-from-palette($jang-front-palette, 400),
+      hover: mat.get-color-from-palette($jang-front-palette, 300),
+      tooltip: mat.get-color-from-palette($jang-front-palette, 300),
+    ),
   )
-));
+);
 
-// 5) Injection des styles Material  
+// 5) Injection des styles Material
 @include mat.core();
 @include mat.all-component-themes($jang-front-theme);
 
-// 6) Tes styles globaux  
-html, body {
+// 6) Tes styles globaux
+html,
+body {
   height: 100%;
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: mat.get-color-from-palette($jang-front-palette, 400);
+}
+
+body * {
+  font-family: "Montserrat", sans-serif !important;
 }
 
 /* === Variables de couleur === */
 :root {
-  --my-dark-color:  #10111A; /* fonds d’app / app-bar / status-bar */
-  --my-light-color: #EBE8E3; /* surfaces légères */
-  --my-blue-color:  #286E70; /* accent (survols, boutons) */
-  --my-green-color: #B2B1A7; /* arrière-plans de dialogues */
-  --my-pink-color:  #8F5381; /* couleur principale */
+  --my-dark-color: #10111a; /* fonds d’app / app-bar / status-bar */
+  --my-light-color: #ebe8e3; /* surfaces légères */
+  --my-blue-color: #286e70; /* accent (survols, boutons) */
+  --my-green-color: #b2b1a7; /* arrière-plans de dialogues */
+  --my-pink-color: #8f5381; /* couleur principale */
 }
 
 /* === Classes utilitaires Texte === */
-.text-my-dark-color  { color: var(--my-dark-color); }
-.text-my-light-color { color: var(--my-light-color); }
-.text-my-blue-color  { color: var(--my-blue-color); }
-.text-my-green-color { color: var(--my-green-color); }
-.text-my-pink-color  { color: var(--my-pink-color); }
+.text-my-dark-color {
+  color: var(--my-dark-color);
+}
+.text-my-light-color {
+  color: var(--my-light-color);
+}
+.text-my-blue-color {
+  color: var(--my-blue-color);
+}
+.text-my-green-color {
+  color: var(--my-green-color);
+}
+.text-my-pink-color {
+  color: var(--my-pink-color);
+}
 
 /* === Classes utilitaires Fond === */
-.bg-my-dark-color  { background-color: var(--my-dark-color); }
-.bg-my-light-color { background-color: var(--my-light-color); }
-.bg-my-blue-color  { background-color: var(--my-blue-color); }
-.bg-my-green-color { background-color: var(--my-green-color); }
-.bg-my-pink-color  { background-color: var(--my-pink-color); }
+.bg-my-dark-color {
+  background-color: var(--my-dark-color);
+}
+.bg-my-light-color {
+  background-color: var(--my-light-color);
+}
+.bg-my-blue-color {
+  background-color: var(--my-blue-color);
+}
+.bg-my-green-color {
+  background-color: var(--my-green-color);
+}
+.bg-my-pink-color {
+  background-color: var(--my-pink-color);
+}

@@ -1,0 +1,21 @@
+.global-container {
+  max-width: 25vw;
+}
+
+.mat-mdc-standard-chip.mdc-evolution-chip--selected:not(
+    .mdc-evolution-chip--disabled
+  ) {
+  background-color: var(--my-blue-color);
+}
+
+.mat-button-toggle-appearance-standard.mat-button-toggle-checked {
+  background-color: var(--my-blue-color);
+}
+
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
+  background-color: var(--my-green-color);
+}
+
+.mat-button-toggle-appearance-standard {
+  background-color: var(--my-green-color);
+}
