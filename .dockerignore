@@ -1,0 +1,10 @@
+# Node / Angular / Java / général
+.git
+node_modules
+dist
+build
+*.log
+__pycache__/
+*.iml
+.vscode
+.DS_Store
