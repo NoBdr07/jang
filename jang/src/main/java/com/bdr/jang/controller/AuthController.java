@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
+/**
+ * REST controller for authentication operations
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -29,6 +32,11 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
+    /**
+     * Registers a new user
+     * @param req CreateUserRequest that contains email, username and password
+     * @return 201 with new UserDTO when register succeeds
+     */
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@RequestBody @Valid CreateUserRequest req) {
         UserDTO created = userService.register(req);
@@ -36,6 +44,12 @@ public class AuthController {
         return ResponseEntity.created(location).body(created);
     }
 
+    /**
+     * Login a known user
+     * @param req LoginRequest that contains username and password
+     * @param response HttpServletResponse
+     * @return 200 with AuthResponse that contains jwt and ExpireIn when login succeeds
+     */
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginRequest req, HttpServletResponse response) {
         String token = userService.login(req);
