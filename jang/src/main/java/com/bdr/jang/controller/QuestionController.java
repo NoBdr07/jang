@@ -28,7 +28,7 @@ public class QuestionController {
      * Retrieves a page of 20 questions in all questions
      *
      * @param pageable
-     * @return
+     * @return 200 with all questions if succeed
      */
     @GetMapping
     public ResponseEntity<Page<QuestionDTO>> getAllQuestions(

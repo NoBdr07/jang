@@ -38,5 +38,12 @@ services:
       mysql:
         condition: service_healthy     # attend que MySQL soit OK
 
+  front:
+    build: ./jang-front
+    ports:
+      - "4200:80"
+    depends_on:
+      - back      
+
 volumes:
   dbdata:
