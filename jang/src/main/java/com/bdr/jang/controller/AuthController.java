@@ -34,6 +34,7 @@ public class AuthController {
 
     /**
      * Registers a new user
+     *
      * @param req CreateUserRequest that contains email, username and password
      * @return 201 with new UserDTO when register succeeds
      */
@@ -46,6 +47,7 @@ public class AuthController {
 
     /**
      * Login a known user
+     *
      * @param req LoginRequest that contains username and password
      * @param response HttpServletResponse
      * @return 200 with AuthResponse that contains jwt and ExpireIn when login succeeds

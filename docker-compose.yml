@@ -1,0 +1,42 @@
+# docker-compose.yml
+services:
+  # ───────────── Base de données ─────────────
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${DATA_USERNAME}       # même user que Spring
+      MYSQL_PASSWORD: ${DATA_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ───────────── Back Spring Boot ─────────────
+  back:
+    build:
+      context: ./jang
+    ports:
+      - "8080:8080"
+    environment:
+      DATA_USERNAME: ${DATA_USERNAME}
+      DATA_PASSWORD: ${DATA_PASSWORD}
+      SECURITY_USERNAME: ${SECURITY_USERNAME}
+      SECURITY_PASSWORD: ${SECURITY_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_DURATION: ${JWT_DURATION}
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
+    depends_on:
+      mysql:
+        condition: service_healthy     # attend que MySQL soit OK
+
+volumes:
+  dbdata:

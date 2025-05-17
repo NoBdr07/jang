@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * REST controller for CRUD operations on questions
+ */
 @RestController
 @RequestMapping("/questions")
 public class QuestionController {
@@ -21,6 +24,12 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
+    /**
+     * Retrieves a page of 20 questions in all questions
+     *
+     * @param pageable
+     * @return
+     */
     @GetMapping
     public ResponseEntity<Page<QuestionDTO>> getAllQuestions(
             @PageableDefault(page = 0, size = 20, sort = "id")

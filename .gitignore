@@ -49,3 +49,6 @@ testem.log
 # fichiers système
 .DS_Store
 Thumbs.db
+
+# Variables d'environnement
+.env
