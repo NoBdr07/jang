@@ -1,0 +1,30 @@
+# docker-compose.override.yml  (DEV UNIQUEMENT)
+services:
+  back:
+    image: maven:3.9.6-eclipse-temurin-21        # ← Maven + JDK 21
+    working_dir: /app
+    command: mvn -B spring-boot:run
+    volumes:
+      - ./jang:/app                              # tout le code
+      - ~/.m2:/root/.m2                          # cache des dépendances
+      - ./jang/target:/app/target 
+    ports:
+      - "8080:8080"
+    environment:
+      # (variables DATA_USERNAME… etc. restent)
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  front:
+    image: node:22-alpine                    # simple image Node pour dev
+    working_dir: /app
+    command: sh -c "npm ci && npm start -- --host 0.0.0.0 --port 4200 --poll=5000"  #  installe, lance HMR
+    volumes:
+      - ./jang-front:/app                    # code Angular monté
+      - /app/node_modules 
+      - /app/.angular/cache                    # dossier anonyme pour plus de vitesse
+    ports:
+      - "4201:4200"
+    depends_on:
+      - back

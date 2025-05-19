@@ -6,14 +6,14 @@ import {
   Observable,
   switchMap,
 } from 'rxjs';
-import { QuestionDTO } from '../shared/models/question.model';
-import { Page } from '../shared/models/page.model';
-import { QuestionService } from '../services/question-service';
+import { QuestionDTO } from '../../shared/models/question.model';
+import { Page } from '../../shared/models/page.model';
+import { QuestionService } from '../../services/question-service';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { FilterComponent } from '../filter/filter.component';
+import { FilterComponent } from '../../shared/components/filter/filter.component';
 import { MatCardModule } from '@angular/material/card';
-import { QuestionCardComponent } from '../question-card/question-card.component';
+import { QuestionCardComponent } from '../../shared/components/filter/question-card/question-card.component';
 
 @Component({
   selector: 'app-quiz',

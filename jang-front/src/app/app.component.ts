@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { QuizComponent } from "./quiz/quiz.component";
+import { QuizComponent } from "./feature/quiz/quiz.component";
+import { AuthService } from './services/auth-service';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,11 @@ import { QuizComponent } from "./quiz/quiz.component";
 })
 export class AppComponent {
   title = 'jang';
+
+  constructor(private auth: AuthService) {
+    // récupère l'état de connexion actuel
+    this.auth.me().subscribe({
+      error: () => this.auth.logout()
+    });
+  }
 }
