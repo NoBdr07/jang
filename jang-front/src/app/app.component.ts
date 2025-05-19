@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { QuizComponent } from "./feature/quiz/quiz.component";
-import { AuthService } from './services/auth-service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',

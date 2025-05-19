@@ -8,7 +8,7 @@ import {
 } from 'rxjs';
 import { QuestionDTO } from '../../shared/models/question.model';
 import { Page } from '../../shared/models/page.model';
-import { QuestionService } from '../../services/question-service';
+import { QuestionService } from '../../services/question.service';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FilterComponent } from '../../shared/components/filter/filter.component';
