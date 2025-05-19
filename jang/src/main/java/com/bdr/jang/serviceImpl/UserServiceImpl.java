@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userMapper.mapToEntity(req);
+        user.setRole("ROLE_USER");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User saved = userRepository.save(user);
 
@@ -63,7 +65,14 @@ public class UserServiceImpl implements UserService {
                         req.password()
                 )
         );
-        return jwtUtils.generateToken(auth.getName());
+
+        String role = auth.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException("No role found for this user"));
+
+        return jwtUtils.generateToken(auth.getName(), role);
     }
 
 }

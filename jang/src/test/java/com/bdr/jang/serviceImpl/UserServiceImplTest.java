@@ -19,7 +19,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -144,12 +148,19 @@ class UserServiceImplTest {
     @Test
     void login_shouldReturnToken_whenCredentialsValid() {
         // GIVEN
+        String role = "ROLE_USER";
+
         Authentication auth = mock(Authentication.class);
         when(authenticationManager.authenticate(
                 any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(auth);
         when(auth.getName()).thenReturn(username);
-        when(jwtUtils.generateToken(username)).thenReturn(token);
+        // on simule une collection d’autorités
+        doReturn(Collections.singletonList(new SimpleGrantedAuthority(role)))
+                .when(auth).getAuthorities();
+
+        // on attend generateToken(username, role)
+        when(jwtUtils.generateToken(username, role)).thenReturn(token);
 
         // WHEN
         String result = userService.login(loginReq);
@@ -157,13 +168,14 @@ class UserServiceImplTest {
         // THEN
         assertEquals(token, result);
         verify(authenticationManager).authenticate(argThat(
-                tok ->
-                        username.equals(tok.getPrincipal()) &&
-                                password.equals(tok.getCredentials())
+                tok -> username.equals(tok.getPrincipal())
+                        && password.equals(tok.getCredentials())
         ));
-        verify(jwtUtils).generateToken(username);
+        // on vérifie bien le nouvel appel
+        verify(jwtUtils).generateToken(username, role);
         verifyNoMoreInteractions(userRepository, passwordEncoder, jwtUtils, authenticationManager);
     }
+
 
     @Test
     void login_shouldThrowBadCredentialsException_whenAuthenticationFails() {

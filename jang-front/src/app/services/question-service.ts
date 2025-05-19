@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
-import { QuestionDTO } from '../models/question.model';
-import { Page } from '../models/page.model';
+import { QuestionDTO } from '../shared/models/question.model';
+import { Page } from '../shared/models/page.model';
 import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({

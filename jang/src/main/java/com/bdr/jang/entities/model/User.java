@@ -3,6 +3,8 @@ package com.bdr.jang.entities.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(
         name = "users",
@@ -31,4 +33,7 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String role;
 }

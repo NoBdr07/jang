@@ -1,5 +1,6 @@
 package com.bdr.jang.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -10,7 +11,10 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
 
 import java.security.Key;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
@@ -46,9 +50,10 @@ public class JwtUtils {
      * @param username id of user
      * @return a string container the generated token
      */
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(key)
@@ -86,6 +91,39 @@ public class JwtUtils {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    /**
+     * Parses all claims stored in the JWT.
+     *
+     * @param token the JWT string
+     * @return the Claims object containing all token claims
+     */
+    public Claims getAllClaimsFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)   // le Key initialisé en @PostConstruct
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    /**
+     * Retrieves the roles claim from the JWT as a list of strings.
+     *
+     * @param token the JWT string
+     * @return list of role authority strings, or empty list if none present
+     */
+    public List<String> getRolesFromToken(String token) {
+        Claims claims = getAllClaimsFromToken(token);
+        Object rawRoles = claims.get("role");
+        if (rawRoles instanceof List<?>) {
+            @SuppressWarnings("unchecked")
+            List<Object> list = (List<Object>) rawRoles;
+            return list.stream()
+                    .map(Object::toString)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 
     /**
