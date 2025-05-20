@@ -11,9 +11,7 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
 
 import java.security.Key;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -51,9 +49,12 @@ public class JwtUtils {
      * @return a string container the generated token
      */
     public String generateToken(String username, String role) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", List.of(role));
+
         return Jwts.builder()
                 .setSubject(username)
-                .claim("role", role)
+                .addClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(key)

@@ -34,9 +34,7 @@ export class RegisterComponent {
     })
   
     ngOnInit(): void {
-        this.sub = this.currentUser$.pipe(
-          filter(user => !!user))
-          .subscribe(() => this.router.navigate(['/login']));      
+       
     }
   
     ngOnDestroy(): void {

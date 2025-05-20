@@ -11,7 +11,6 @@ import com.bdr.jang.repository.UserRepository;
 import com.bdr.jang.service.UserService;
 import com.bdr.jang.util.JwtUtils;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
