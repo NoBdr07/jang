@@ -1,1 +1,20 @@
-<p>register works!</p>
+<div class="global-container">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+            <mat-label>Nom d'utilisateur</mat-label>
+            <input matInput formControlName="username" name="username">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" name="email">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Mot de passe</mat-label>
+            <input matInput type="password" formControlName="password" name="password">
+        </mat-form-field>
+
+        <button mat-raised-button type="submit">
+            Créer son compte
+        </button>
+    </form>
+</div>

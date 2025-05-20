@@ -22,8 +22,8 @@ services:
 
   # ───────────── Back Spring Boot ─────────────
   back:
-    build:
-      context: ./jang
+    #build:
+    #  context: ./jang
     ports:
       - "8080:8080"
     environment:

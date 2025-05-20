@@ -21,13 +21,17 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   register(req: RegisterRequest): Observable<any> {
-    return this.http.post(`${this.url}/register`, req);
+    return this.http.post(`${this.url}/register`, req).pipe(
+      tap(() => {
+        this.router.navigate(['login']);
+      })
+    )
   }
 
   login(req: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(
       `${this.url}/login`,
-      { req },
+      req ,
       { withCredentials: true }
     ).pipe(
       tap(() => {

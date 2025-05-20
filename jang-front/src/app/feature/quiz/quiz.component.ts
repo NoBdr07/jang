@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FilterComponent } from '../../shared/components/filter/filter.component';
 import { MatCardModule } from '@angular/material/card';
-import { QuestionCardComponent } from '../../shared/components/filter/question-card/question-card.component';
+import { QuestionCardComponent } from '../../shared/components/question-card/question-card.component';
 
 @Component({
   selector: 'app-quiz',
