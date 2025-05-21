@@ -8,7 +8,9 @@ import com.bdr.jang.repository.QuestionRepository;
 import com.bdr.jang.service.QuestionService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,16 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Page<QuestionDTO> getAllQuestions(Pageable pageable) {
-        return questionRepository.findAll(pageable)
+        // on fixe toujours 20 questions par page et on neutralise tout tri
+        PageRequest p20 = PageRequest.of(
+                pageable.getPageNumber(),
+                20,
+                Sort.unsorted()
+        );
+
+        // on passe juste la spec randomOrder()
+        return questionRepository
+                .findAll(QuestionSpecs.randomOrder(), p20)
                 .map(questionMapper::mapToDTO);
     }
 
@@ -53,8 +64,10 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Page<QuestionDTO> getQuestionsByFilter
             (List<Integer> niveaux, List<String> topics, Pageable pageable) {
-        Specification<Question> spec = Specification.where(QuestionSpecs.hasLevels(niveaux))
-                .and(QuestionSpecs.hasTopics(topics));
+        Specification<Question> spec = Specification
+                .where(QuestionSpecs.hasLevels(niveaux))
+                .and(QuestionSpecs.hasTopics(topics))
+                .and(QuestionSpecs.randomOrder());
         return questionRepository.findAll(spec, pageable)
                 .map(questionMapper::mapToDTO);
     }

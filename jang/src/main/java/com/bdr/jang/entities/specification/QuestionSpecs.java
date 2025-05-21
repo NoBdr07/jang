@@ -30,4 +30,13 @@ public class QuestionSpecs {
             return joinTopics.get("name").in(topicNames);
         };
     }
+
+    public static Specification<Question> randomOrder() {
+        return (root, query, cb) -> {
+            if (Long.class != query.getResultType()) {
+                query.orderBy(cb.asc(cb.function("RAND", Double.class)));
+            }
+            return cb.conjunction();
+        };
+    }
 }
