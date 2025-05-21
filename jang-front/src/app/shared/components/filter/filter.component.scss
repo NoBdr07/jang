@@ -1,5 +1,14 @@
 .global-container {
   max-width: 25vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+::ng-deep .mdc-evolution-chip-set__chips {
+  justify-content: center;
 }
 
 .mat-mdc-standard-chip.mdc-evolution-chip--selected:not(
@@ -13,9 +22,21 @@
 }
 
 .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
-  background-color: var(--my-green-color);
+  background-color: var(--my-dark-color);
+  border: var(--my-light-color) !important;
 }
 
 .mat-button-toggle-appearance-standard {
-  background-color: var(--my-green-color);
+  background-color: var(--my-dark-color);
+  border: var(--my-light-color) !important;
 }
+
+::ng-deep .mdc-evolution-chip__text-label {
+  color: var(--my-light-color) !important;
+}
+
+::ng-deep .mat-button-toggle-label-content {
+  color: var(--my-light-color) !important;
+}
+
+
