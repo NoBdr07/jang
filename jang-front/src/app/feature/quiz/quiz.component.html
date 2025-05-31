@@ -4,12 +4,17 @@
   <app-filter (selectionChange)="onFilterChange($event)"></app-filter>
 
   @if (currentQuestion$ | async; as current) {
-  <div *ngIf="questionsPage$ | async as page">
-    <p>Question {{ questionIndex }} / {{ page.content.length }}</p>
-  </div>
   <app-question-card
     (nextQuestion)="nextQuestion()"
+    (pushEvaluation)="evaluate($event, current)"
     [question]="current"
   ></app-question-card>
+
+  <app-progress
+    [current]="questionIndex"
+    [total]="maxQuestions"
+    [stats]="getStats()"
+    >
+  </app-progress>
   }
 </div>

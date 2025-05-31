@@ -1,0 +1,25 @@
+<div class="global-container">
+  <p>Question {{ current }} / {{ total }}</p>
+
+  <!-- jauge VERTICALE -->
+  <div class="jauge-vertical">
+    <div
+      class="jauge-section ok"
+      [style.height.%]="(stats.ok / total) * 100"
+    ></div>
+    <div
+      class="jauge-section bof"
+      [style.height.%]="(stats.bof / total) * 100"
+    ></div>
+    <div
+      class="jauge-section ko"
+      [style.height.%]="(stats.ko / total) * 100"
+    ></div>
+  </div>
+
+  <div class="stats">
+    <span class="font-ok">{{ stats.ok }}</span>
+    <span class="font-bof">{{ stats.bof }}</span>
+    <span class="font-ko">{{ stats.ko }}</span>
+  </div>
+</div>

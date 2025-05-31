@@ -4,7 +4,10 @@ import {
   combineLatest,
   map,
   Observable,
+  Subject,
   switchMap,
+  take,
+  tap,
 } from 'rxjs';
 import { QuestionDTO } from '../../shared/models/question.model';
 import { Page } from '../../shared/models/page.model';
@@ -14,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FilterComponent } from '../../shared/components/filter/filter.component';
 import { MatCardModule } from '@angular/material/card';
 import { QuestionCardComponent } from '../../shared/components/question-card/question-card.component';
+import { ProgressComponent } from '../../shared/components/progress/progress.component';
 
 @Component({
   selector: 'app-quiz',
@@ -23,6 +27,7 @@ import { QuestionCardComponent } from '../../shared/components/question-card/que
     MatButtonModule,
     FilterComponent,
     QuestionCardComponent,
+    ProgressComponent,
     MatCardModule,
   ],
   templateUrl: './quiz.component.html',
@@ -30,7 +35,7 @@ import { QuestionCardComponent } from '../../shared/components/question-card/que
 })
 export class QuizComponent {
   // Nombre max de questions chargées
-  private maxQuestions = 20;
+  maxQuestions = 20;
 
   // Streams de critère
   private niveau$ = new BehaviorSubject<number[]>([]);
@@ -39,6 +44,9 @@ export class QuizComponent {
 
   // Index de la question dans la page (0 à maxQuestions-1)
   private index$ = new BehaviorSubject<number>(0);
+
+  // Note de 0 à 2 pour chaque question
+  evaluations = new Map<number, number>(); // id → note
 
   // Stream principal : dès qu'un critère change, on relance la requête
   questionsPage$: Observable<Page<QuestionDTO>> = combineLatest([
@@ -86,6 +94,22 @@ export class QuizComponent {
       this.page$.next(this.page$.value + 1);
       this.index$.next(0);
     }
+  }
+
+  evaluate(note: number, question: QuestionDTO) {
+    this.evaluations.set(question.id, note);
+  }
+
+  getStats() {
+    let ok = 0,
+      bof = 0,
+      ko = 0;
+    for (const note of this.evaluations.values()) {
+      if (note == 2) ok++;
+      else if (note == 1) bof++;
+      else ko++;
+    }
+    return {ok, bof, ko};
   }
 
   get questionIndex() {
