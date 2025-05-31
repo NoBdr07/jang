@@ -18,7 +18,12 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button *ngIf="!showAnswer" mat-button color="primary" (click)="toggleAnswer()">
+    <button
+      *ngIf="!showAnswer"
+      mat-button
+      color="primary"
+      (click)="toggleAnswer()"
+    >
       Voir la réponse
     </button>
 
@@ -48,12 +53,20 @@
     </button>
 
     <button
-      *ngIf="showAnswer && isEvaluated"
+      *ngIf="showAnswer && isEvaluated && questionIndex !== 20"
       mat-button
       color="primary"
-      (click)="onNext()"
+      (click)="onNextQuestion()"
     >
       Question suivante
+    </button>
+    <button
+      *ngIf="showAnswer && isEvaluated && questionIndex === 20"
+      mat-button
+      color="primary"
+      (click)="onNextSet()"
+    >
+      Série suivante ?
     </button>
   </mat-card-actions>
 </mat-card>

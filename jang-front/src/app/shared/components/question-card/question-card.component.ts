@@ -14,18 +14,27 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class QuestionCardComponent {
   @Input() question?: QuestionDTO;
+  @Input() questionIndex?: number;
   @Output() nextQuestion = new EventEmitter<void>();
+  @Output() nextSet = new EventEmitter<void>();
   @Output() pushEvaluation = new EventEmitter<number>();
 
   showAnswer = false;
   isEvaluated = false;
+  isLastQuestion = false;
 
   toggleAnswer() {
     this.showAnswer = !this.showAnswer;
   }
 
-  onNext() {
+  onNextQuestion() {
     this.nextQuestion.emit();
+    this.showAnswer = false;
+    this.isEvaluated = false;
+  }
+
+  onNextSet() {
+    this.nextSet.emit();
     this.showAnswer = false;
     this.isEvaluated = false;
   }

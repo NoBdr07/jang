@@ -6,8 +6,10 @@
   @if (currentQuestion$ | async; as current) {
   <app-question-card
     (nextQuestion)="nextQuestion()"
+    (nextSet)="nextPage()"
     (pushEvaluation)="evaluate($event, current)"
     [question]="current"
+    [questionIndex]="questionIndex"
   ></app-question-card>
 
   <app-progress

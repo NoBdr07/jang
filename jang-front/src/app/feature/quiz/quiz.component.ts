@@ -46,7 +46,7 @@ export class QuizComponent {
   private index$ = new BehaviorSubject<number>(0);
 
   // Note de 0 à 2 pour chaque question
-  evaluations = new Map<number, number>(); // id → note
+  evaluations = new Map<number, number>(); 
 
   // Stream principal : dès qu'un critère change, on relance la requête
   questionsPage$: Observable<Page<QuestionDTO>> = combineLatest([
@@ -82,8 +82,9 @@ export class QuizComponent {
   }
 
   nextPage() {
-    const nextPage = this.page$.value + 1;
-    this.page$.next(nextPage);
+    this.evaluations.clear();
+    this.page$.next(this.page$.value + 1);    
+    this.index$.next(0);
   }
 
   nextQuestion() {
