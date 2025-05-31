@@ -4,6 +4,9 @@
   <app-filter (selectionChange)="onFilterChange($event)"></app-filter>
 
   @if (currentQuestion$ | async; as current) {
+  <div *ngIf="questionsPage$ | async as page">
+    <p>Question {{ questionIndex }} / {{ page.content.length }}</p>
+  </div>
   <app-question-card
     (nextQuestion)="nextQuestion()"
     [question]="current"

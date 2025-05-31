@@ -38,7 +38,7 @@ export class QuizComponent {
   private page$ = new BehaviorSubject<number>(0);
 
   // Index de la question dans la page (0 à maxQuestions-1)
-  private index$  = new BehaviorSubject<number>(0);
+  private index$ = new BehaviorSubject<number>(0);
 
   // Stream principal : dès qu'un critère change, on relance la requête
   questionsPage$: Observable<Page<QuestionDTO>> = combineLatest([
@@ -57,17 +57,16 @@ export class QuizComponent {
   );
 
   // On en déduit la question courante
-  currentQuestion$: Observable<QuestionDTO | undefined> =
-    combineLatest([this.questionsPage$, this.index$])
-    .pipe(
-      map(([page, idx]) => page.content[idx] )
-    );
+  currentQuestion$: Observable<QuestionDTO | undefined> = combineLatest([
+    this.questionsPage$,
+    this.index$,
+  ]).pipe(map(([page, idx]) => page.content[idx]));
 
   constructor(private questionService: QuestionService) {}
 
   // Méthodes appelées par le composant enfant filter
   onFilterChange(filter: { niveau: number[]; topics: string[] }) {
-    console.log("Appel de onFilterChange dans quiz component");
+    console.log('Appel de onFilterChange dans quiz component');
     this.niveau$.next(filter.niveau);
     this.topics$.next(filter.topics);
     this.page$.next(0);
@@ -81,12 +80,15 @@ export class QuizComponent {
 
   nextQuestion() {
     const idx = this.index$.value;
-    if( idx < this.maxQuestions) {
+    if (idx < this.maxQuestions) {
       this.index$.next(idx + 1);
     } else {
       this.page$.next(this.page$.value + 1);
       this.index$.next(0);
     }
-    
+  }
+
+  get questionIndex() {
+    return this.index$.value + 1;
   }
 }

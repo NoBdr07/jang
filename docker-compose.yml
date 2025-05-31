@@ -9,7 +9,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${DATA_USERNAME}       # même user que Spring
+      MYSQL_USER: ${DATA_USERNAME}      
       MYSQL_PASSWORD: ${DATA_PASSWORD}
     volumes:
       - dbdata:/var/lib/mysql
@@ -36,7 +36,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
     depends_on:
       mysql:
-        condition: service_healthy     # attend que MySQL soit OK
+        condition: service_healthy     
 
   front:
     build: ./jang-front

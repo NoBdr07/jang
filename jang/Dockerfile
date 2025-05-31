@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1         # ← active les fonctions modernes (couche BuildKit)
+# Dockerfile du back
 
 ### ──────────────── 1) STAGE BUILDER ────────────────
 FROM maven:3.9.6-eclipse-temurin-21 AS builder
