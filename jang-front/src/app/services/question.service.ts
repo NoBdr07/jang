@@ -9,7 +9,7 @@ import { catchError, Observable, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class QuestionService {
-  private readonly url = `${environment.apiUrl}/questions/filter`;
+  private readonly url = `${environment.apiUrl}/questions`;
 
   constructor(private http: HttpClient) {}
 
@@ -33,7 +33,7 @@ export class QuestionService {
       });
     }
 
-    return this.http.get<Page<QuestionDTO>>(this.url, { params })
+    return this.http.get<Page<QuestionDTO>>(`${this.url}/filter`, { params })
     .pipe(
         catchError(err => {
             console.error("get filtered questions failed : " + err);
@@ -41,4 +41,39 @@ export class QuestionService {
         })
     );
   }
+
+  // — CRÉER UNE QUESTION —
+  createQuestion(dto: QuestionDTO): Observable<QuestionDTO> {
+    return this.http.post<QuestionDTO>(this.url, dto).pipe(
+      catchError((err) => {
+        console.error('createQuestion a échoué :', err);
+        return throwError(() => new Error('Impossible de créer la question'));
+      })
+    );
+  }
+
+  // — METTRE À JOUR UNE QUESTION —
+  updateQuestion(dto: QuestionDTO): Observable<QuestionDTO> {
+    if (!dto.id) {
+      return throwError(() => new Error('L’ID de la question est requis pour la mise à jour'));
+    }
+    return this.http.put<QuestionDTO>(`${this.url}/${dto.id}`, dto).pipe(
+      catchError((err) => {
+        console.error('updateQuestion a échoué :', err);
+        return throwError(() => new Error('Impossible de mettre à jour la question'));
+      })
+    );
+  }
+
+  // — SUPPRIMER UNE QUESTION —
+  deleteQuestion(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`).pipe(
+      catchError((err) => {
+        console.error('deleteQuestion a échoué :', err);
+        return throwError(() => new Error('Impossible de supprimer la question'));
+      })
+    );
+  }
+
+
 }

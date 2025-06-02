@@ -2,6 +2,7 @@ package com.bdr.jang.controller;
 
 import com.bdr.jang.entities.dto.QuestionDTO;
 import com.bdr.jang.service.QuestionService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,14 +26,14 @@ public class QuestionController {
     }
 
     /**
-     * Retrieves a page of 20 questions in all questions
+     * Retrieves a page of x questions in all questions
      *
      * @param pageable
      * @return 200 with all questions if succeed
      */
     @GetMapping
     public ResponseEntity<Page<QuestionDTO>> getAllQuestions(
-            @PageableDefault(page = 0, size = 20, sort = "id")
+            @PageableDefault(page = 0, size = 10, sort = "id")
             Pageable pageable
     ) {
         Page<QuestionDTO> questions = questionService.getAllQuestions(pageable);
@@ -53,6 +54,36 @@ public class QuestionController {
     ) {
         Page<QuestionDTO> filteredQuestions = questionService.getQuestionsByFilter(niveaux, topics, pageable);
         return ResponseEntity.ok(filteredQuestions);
+    }
+
+    @PostMapping()
+    public ResponseEntity<QuestionDTO> addNewQuestion(@Valid @RequestBody QuestionDTO questionDTO) {
+        QuestionDTO createdQuestionDto = questionService.createQuestion(questionDTO);
+        return ResponseEntity.ok(createdQuestionDto);
+    }
+
+    @DeleteMapping("/{questionId}")
+    public ResponseEntity<?> deleteQuestion(@PathVariable Long questionId) {
+        questionService.deleteQuestion(questionId);
+        return ResponseEntity.ok("Question deleted");
+    }
+
+    /**
+     * Met à jour une question existante (titre, réponse, niveau, topic).
+     *
+     * @param questionId  l’ID de la question à modifier
+     * @param questionDTO le DTO contenant les nouveaux champs (title, answer, level, topicName)
+     * @return 200 + QuestionDTO mis à jour, ou 404 si l’ID n’existe pas
+     */
+    @PutMapping("/{questionId}")
+    public ResponseEntity<QuestionDTO> updateQuestion(
+            @PathVariable Long questionId,
+            @Valid @RequestBody QuestionDTO questionDTO
+    ) {
+        // On force le DTO à avoir l’ID de la ressource à mettre à jour
+        questionDTO.setId(questionId);
+        QuestionDTO updated = questionService.updateQuestion(questionDTO);
+        return ResponseEntity.ok(updated);
     }
 
 

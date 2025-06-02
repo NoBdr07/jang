@@ -1,3 +1,74 @@
-* {
-    color: var(--my-light-color);
+/* src/app/gestion-questions/gestion-questions.component.scss */
+.gestion-questions-container {
+  padding: 16px;
+
+  h2 {
+    margin-bottom: 16px;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+    align-items: center;
+    justify-content: center;
+
+    mat-form-field {
+      width: 200px;
+    }
+
+    button {
+      height: 36px;
+    }
+  }
+
+  table {
+    width: 100%;
+    margin-bottom: 24px;
+    background-color: var(--my-light-color);
+    border-radius: 4px;
+    overflow: hidden;
+
+    th.mat-header-cell {
+      background-color: var(--my-pink-color);
+      color: var(--my-light-color);
+      font-weight: 600;
+    }
+
+    td.mat-cell {
+      color: var(--my-dark-color);
+    }
+  }
+
+  .question-form-container {
+    margin-top: 32px;
+    padding: 16px;
+    background-color: var(--my-green-color);
+    border-radius: 6px;
+
+    h3 {
+      margin-bottom: 16px;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+
+      .full-width {
+        flex: 1 1 100%;
+      }
+
+      .half-width {
+        flex: 1 1 calc(50% - 8px);
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 16px;
+        margin-top: 16px;
+      }
+    }
+  }
 }
