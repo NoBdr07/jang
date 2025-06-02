@@ -17,7 +17,7 @@ export class QuestionService {
     niveau?: number[],
     topics?: string[],
     page = 0,
-    size = 20
+    size = 10
   ): Observable<Page<QuestionDTO>> {
     let params = new HttpParams()
       .set('page', page.toString())

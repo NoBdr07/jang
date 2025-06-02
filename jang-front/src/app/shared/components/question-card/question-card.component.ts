@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class QuestionCardComponent {
   @Input() question?: QuestionDTO;
   @Input() questionIndex?: number;
+  @Input() total = 0;
   @Output() nextQuestion = new EventEmitter<void>();
   @Output() nextSet = new EventEmitter<void>();
   @Output() pushEvaluation = new EventEmitter<number>();

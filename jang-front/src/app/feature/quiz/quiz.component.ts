@@ -35,7 +35,7 @@ import { ProgressComponent } from '../../shared/components/progress/progress.com
 })
 export class QuizComponent {
   // Nombre max de questions chargées
-  maxQuestions = 20;
+  maxQuestions = 10;
 
   // Streams de critère
   private niveau$ = new BehaviorSubject<number[]>([]);

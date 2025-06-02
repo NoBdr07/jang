@@ -30,7 +30,7 @@
     <button
       *ngIf="showAnswer && !isEvaluated"
       mat-button
-      class="red"
+      class="grey"
       (click)="evaluate(0)"
     >
       Pas du tout
@@ -38,7 +38,7 @@
     <button
       *ngIf="showAnswer && !isEvaluated"
       mat-button
-      class="yellow"
+      class="pink"
       (click)="evaluate(1)"
     >
       Bof
@@ -46,14 +46,14 @@
     <button
       *ngIf="showAnswer && !isEvaluated"
       mat-button
-      class="green"
+      class="blue"
       (click)="evaluate(2)"
     >
       C'est bon
     </button>
 
     <button
-      *ngIf="showAnswer && isEvaluated && questionIndex !== 20"
+      *ngIf="showAnswer && isEvaluated && questionIndex !== total"
       mat-button
       color="primary"
       (click)="onNextQuestion()"
@@ -61,7 +61,7 @@
       Question suivante
     </button>
     <button
-      *ngIf="showAnswer && isEvaluated && questionIndex === 20"
+      *ngIf="showAnswer && isEvaluated && questionIndex === total"
       mat-button
       color="primary"
       (click)="onNextSet()"

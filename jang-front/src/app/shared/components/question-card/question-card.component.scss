@@ -27,20 +27,14 @@ mat-card-title {
   width: 100%;
 }
 
-// variables dédiées (tu peux les sortir dans _colors.scss si tu veux)
-$color-good:  #286e70; // 300
-$color-avg:   lighten(#8f5381, 10%); // 200 éclairci
-$color-bad:   #b2b1a7; // 100
-$color-empty: #ebe8e3; // 50
-
-.red {
-  color: $color-bad !important;
+.blue {
+  color: var(--my-blue-color) !important;
 }
 
-.yellow {
-  color: $color-avg !important;
+.pink {
+  color: lighten(#8f5381, 10%) !important;
 }
 
-.green {
-  color: $color-good  !important;
+.grey {
+  color: var(--my-green-color) !important;
 }
