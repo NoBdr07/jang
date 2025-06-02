@@ -27,6 +27,13 @@ export const routes: Routes = [
             import('./feature/dashboard/dashboard.component')
             .then((c) => c.DashboardComponent),
             canActivate: [authGuard]
+    },
+    {
+        path: 'gestion-questions',
+        loadComponent: () => 
+            import('./feature/gestion-questions/gestion-questions.component')
+            .then((c) => c.GestionQuestionsComponent),
+            canActivate: [authGuard]
     }
 
 ];

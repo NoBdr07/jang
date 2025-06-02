@@ -10,21 +10,4 @@ body {
   justify-content: space-evenly;
 }
 
-#main-title {
-  font-size: 10rem;
-  font-weight: 900;
-  background-image: linear-gradient(
-    90deg,
-    #286e70, // couleur de départ
-    #8f5381 // couleur d’arrivée
-  );
-  /* clipping du background dans le texte */
-  background-clip: text;
-  -webkit-background-clip: text;
-  /* rend le texte transparent pour ne laisser voir que le dégradé */
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  text-align: center;
-  margin: 20px auto;
-  width: fit-content;
-}
+

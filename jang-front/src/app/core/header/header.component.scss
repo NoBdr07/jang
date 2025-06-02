@@ -1,0 +1,53 @@
+.header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#main-title {
+  font-size: 6rem;
+  font-weight: 900;
+  background-image: linear-gradient(
+    90deg,
+    #286e70, // couleur de départ
+    #8f5381 // couleur d’arrivée
+  );
+  /* clipping du background dans le texte */
+  background-clip: text;
+  -webkit-background-clip: text;
+  /* rend le texte transparent pour ne laisser voir que le dégradé */
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  width: fit-content;
+}
+
+.links {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    height: 38px;
+}
+
+$grad-start: #286e70;
+$grad-end:   #8f5381;
+
+.links a {
+  // aspect général
+  display: inline-block;
+  padding: 8px 20px;
+  font-weight: 600;
+  text-decoration: none;
+
+  color: var(--my-light-color);
+  border: 2px solid transparent;            // largeur du trait
+  border-image: linear-gradient(90deg, $grad-start, $grad-end) 1;
+  border-radius: 6px;                       // coins arrondis OK depuis Chrome 109+
+
+  // petit plus : remplissage gradient au survol
+  &:hover {
+    background: linear-gradient(90deg, $grad-start, $grad-end);
+    color: #000;                            // contraste sur fond dégradé
+  }
+}
