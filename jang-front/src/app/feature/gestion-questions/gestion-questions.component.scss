@@ -42,7 +42,7 @@
   }
 
   .question-form-container {
-    margin-top: 32px;
+    margin : 32px 0;
     padding: 16px;
     background-color: var(--my-green-color);
     border-radius: 6px;
@@ -71,4 +71,12 @@
       }
     }
   }
+}
+
+::ng-deep .mat-mdc-icon-button.mat-primary {
+    --mdc-icon-button-icon-color: var(--my-blue-color) !important;
+}
+
+::ng-deep .mat-mdc-icon-button.mat-warn {
+    --mdc-icon-button-icon-color: var(--my-pink-color) !important;
 }

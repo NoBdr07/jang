@@ -65,13 +65,19 @@ body * {
   font-family: "Montserrat", sans-serif !important;
 }
 
+/* Permet à <mat-icon> d’utiliser bien la police Material Icons */
+.material-icons {
+  font-family: 'Material Icons' !important;
+}
+
+
 /* === Variables de couleur === */
 :root {
-  --my-dark-color: #10111a; /* fonds d’app / app-bar / status-bar */
-  --my-light-color: #ebe8e3; /* surfaces légères */
-  --my-blue-color: #286e70; /* accent (survols, boutons) */
-  --my-green-color: #b2b1a7; /* arrière-plans de dialogues */
-  --my-pink-color: #8f5381; /* couleur principale */
+  --my-dark-color: #10111a; 
+  --my-light-color: #ebe8e3; 
+  --my-blue-color: #286e70; 
+  --my-green-color: #b2b1a7; 
+  --my-pink-color: #8f5381;
 }
 
 /* === Classes utilitaires Texte === */
