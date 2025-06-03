@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,7 +9,9 @@ import { MatTableModule } from '@angular/material/table';
 import { QuestionService } from '../../services/question.service';
 import { QuestionDTO } from '../../shared/models/question.model';
 import { MatIconModule } from '@angular/material/icon';
-import { catchError, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
+import { TopicService } from '../../services/topic.service';
+
 
 @Component({
   selector: 'app-gestion-questions',
@@ -23,8 +25,7 @@ import { catchError, throwError } from 'rxjs';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatInputModule,
-    MatIconModule,
+    MatIconModule
   ],
   templateUrl: './gestion-questions.component.html',
   styleUrl: './gestion-questions.component.scss',
@@ -32,13 +33,15 @@ import { catchError, throwError } from 'rxjs';
 export class GestionQuestionsComponent {
   questions: QuestionDTO[] = [];
   levels: number[] = [1, 2, 3];
-  filterTopic: string = '';
+  selectedTopic: string | null = null;
   selectedLevel: number | null = null;
   displayedColumns: string[] = ['id', 'title', 'level', 'topicName', 'actions'];
 
   showForm = false;
   editingQuestion: QuestionDTO | null = null;
   questionForm!: FormGroup;
+
+  readonly topics$ = inject(TopicService).getTopics();
 
   constructor(
     private fb: FormBuilder,
@@ -62,7 +65,7 @@ export class GestionQuestionsComponent {
 
   loadQuestions(): void {
     const niveaux = this.selectedLevel ? [this.selectedLevel] : [];
-    const topics = this.filterTopic ? [this.filterTopic] : [];
+    const topics = this.selectedTopic ? [this.selectedTopic] : [];
     this.questionService
       .getFilteredQuestions(niveaux, topics, 0, 50)
       .pipe(
@@ -76,6 +79,11 @@ export class GestionQuestionsComponent {
       .subscribe((page) => {
         this.questions = page.content; // on suppose Page<T> a une propriété content
       });
+  }
+
+  selectTopic(name: string): void {
+    this.selectedTopic = this.selectedTopic === name ? null : name;
+    this.loadQuestions();
   }
 
   onAddNew(): void {

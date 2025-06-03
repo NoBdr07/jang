@@ -18,7 +18,7 @@ export class FilterComponent {
     topics: string[];
   }>();
 
-  niveaux = [1, 2, 3];
+  niveaux = [1, 2, 3];  
   readonly topics$ = inject(TopicService).getTopics();
 
   selectedNiveaux: number[] = [];

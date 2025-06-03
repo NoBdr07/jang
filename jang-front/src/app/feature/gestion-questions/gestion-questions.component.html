@@ -6,12 +6,15 @@
   <div class="filters">
     <mat-form-field appearance="fill">
       <mat-label>Topic</mat-label>
-      <input
-        matInput
-        placeholder="Filtrer par topic"
-        [(ngModel)]="filterTopic"
-        (keyup.enter)="loadQuestions()"
-      />
+      <mat-select
+        [(ngModel)]="selectedTopic"
+        (selectionChange)="loadQuestions()"
+      >
+        <mat-option [value]="null">Tous</mat-option>
+        <mat-option *ngFor="let t of topics$ | async" [value]="t.name">
+          {{ t.name }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -78,7 +81,11 @@
 
       <mat-form-field appearance="fill" class="half-width">
         <mat-label>Topic</mat-label>
-        <input matInput formControlName="topicName" />
+        <mat-select formControlName="topicName">
+          <mat-option *ngFor="let t of topics$ | async" [value]="t.name">
+            {{ t.name }}
+          </mat-option>
+        </mat-select>
         <mat-error *ngIf="questionForm.get('topicName')?.hasError('required')">
           Le nom du topic est requis
         </mat-error>
