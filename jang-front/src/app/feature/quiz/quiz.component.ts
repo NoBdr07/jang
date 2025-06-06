@@ -4,10 +4,7 @@ import {
   combineLatest,
   map,
   Observable,
-  Subject,
   switchMap,
-  take,
-  tap,
 } from 'rxjs';
 import { QuestionDTO } from '../../shared/models/question.model';
 import { Page } from '../../shared/models/page.model';
@@ -79,6 +76,7 @@ export class QuizComponent {
     this.topics$.next(filter.topics);
     this.page$.next(0);
     this.index$.next(0);
+    this.evaluations.clear();
   }
 
   nextPage() {

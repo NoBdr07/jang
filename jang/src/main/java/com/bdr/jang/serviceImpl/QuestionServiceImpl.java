@@ -17,6 +17,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -68,9 +69,17 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Page<QuestionDTO> getQuestionsByFilter
             (List<Integer> niveaux, List<String> topics, Pageable pageable) {
+
+        List<String> trimmedTopics = null;
+        if(topics != null) {
+            trimmedTopics = topics.stream()
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+        }
+
         Specification<Question> spec = Specification
                 .where(QuestionSpecs.hasLevels(niveaux))
-                .and(QuestionSpecs.hasTopics(topics))
+                .and(QuestionSpecs.hasTopics(trimmedTopics))
                 .and(QuestionSpecs.randomOrder());
         return questionRepository.findAll(spec, pageable)
                 .map(questionMapper::mapToDTO);
