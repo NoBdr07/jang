@@ -39,4 +39,37 @@
   color: var(--my-light-color) !important;
 }
 
+// Tablettes et petits écrans (≤ 768px)
+@media screen and (max-width: 768px) {
+  .global-container {
+    max-width: none;      
+    width: 90%;    
+    padding: 0 10px;      
+    gap: 16px;      
+  }
+
+  .filter-section {
+    width: 100%;       
+    align-items: stretch; 
+    flex-wrap: nowrap;
+  }
+
+  .filter-section > * {
+    width: 100%;         
+  }
+
+  ::ng-deep .mdc-evolution-chip-set__chips,
+  ::ng-deep .mat-button-toggle-group {
+    flex-wrap: wrap;   
+    justify-content: center;
+    gap: 12px;         
+  }
+
+  ::ng-deep .mat-button-toggle-appearance-standard,
+  ::ng-deep .mdc-evolution-chip__text-label {
+    font-size: 0.9rem;    
+  }
+}
+
+
 

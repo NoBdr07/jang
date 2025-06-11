@@ -1,23 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, shareReplay, tap, finalize } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  of,
+  shareReplay,
+  tap,
+  finalize,
+  map,
+} from 'rxjs';
 import { Router } from '@angular/router';
 
 import { environment } from '../environments/environment';
-import { MeResponse }   from '../shared/payload/me-response.interface';
+import { MeResponse } from '../shared/payload/me-response.interface';
 import { RegisterRequest } from '../shared/payload/register-request.interface';
-import { LoginRequest }    from '../shared/payload/login-request.interface';
-import { AuthResponse }    from '../shared/payload/auth-response.interface';
+import { LoginRequest } from '../shared/payload/login-request.interface';
+import { AuthResponse } from '../shared/payload/auth-response.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
   /* ───────── configuration ───────── */
   private readonly url = `${environment.apiUrl}/auth`;
 
   /* ───────── état utilisateur ───────── */
   private currentUserSubject = new BehaviorSubject<MeResponse | null>(null);
-  currentUser$               = this.currentUserSubject.asObservable();
+  currentUser$ = this.currentUserSubject.asObservable();
 
   /* ───────── mémo de la requête /me ───────── */
   /** contiendra la seule requête HTTP /me en cours ou déjà terminée */
@@ -27,26 +34,23 @@ export class AuthService {
 
   /* ───────── inscription ───────── */
   register(req: RegisterRequest): Observable<void> {
-    return this.http.post<void>(`${this.url}/register`, req).pipe(
-      tap(() => this.router.navigate(['/login']))
-    );
+    return this.http
+      .post<void>(`${this.url}/register`, req)
+      .pipe(tap(() => this.router.navigate(['/login'])));
   }
 
   /* ───────── connexion ───────── */
   login(req: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(
-      `${this.url}/login`,
-      req,
-      { withCredentials: true }
-    ).pipe(
-      tap(() => this.me().subscribe()),   // déclenche la mise en cache
-      tap(() => this.router.navigate(['/dashboard']))
-    );
+    return this.http
+      .post<AuthResponse>(`${this.url}/login`, req, { withCredentials: true })
+      .pipe(
+        tap(() => this.me().subscribe()), // déclenche la mise en cache
+        tap(() => this.router.navigate(['/dashboard']))
+      );
   }
 
   /* ───────── profil courant (/me) ───────── */
   me(): Observable<MeResponse> {
-
     /* ① si l’utilisateur est déjà en mémoire → retour immédiat */
     const cached = this.currentUserSubject.value;
     if (cached) {
@@ -62,9 +66,10 @@ export class AuthService {
     this.meRequest$ = this.http
       .get<MeResponse>(`${this.url}/me`, { withCredentials: true })
       .pipe(
-        tap(user => this.currentUserSubject.next(user)),
-        shareReplay(1),               // partage la même réponse
-        finalize(() => {              // libère le mémo en cas d’erreur ou logout
+        tap((user) => this.currentUserSubject.next(user)),
+        shareReplay(1), // partage la même réponse
+        finalize(() => {
+          // libère le mémo en cas d’erreur ou logout
           this.meRequest$ = undefined;
         })
       );
@@ -75,12 +80,10 @@ export class AuthService {
   /* ───────── déconnexion ───────── */
   logout(): void {
     this.currentUserSubject.next(null);
-    this.meRequest$ = undefined;      // vide le cache → prochaine nav = nouveau /me
+    this.meRequest$ = undefined; // vide le cache → prochaine nav = nouveau /me
     this.router.navigate(['/login']);
   }
 
   /* ───────── aide lecture rôle ───────── */
-  get role(): string | null {
-    return this.currentUserSubject.value?.role ?? null;
-  }
+  role$ = this.currentUser$.pipe(map((user) => user?.role ?? null));
 }

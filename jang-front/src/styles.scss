@@ -18,7 +18,7 @@ $jang-front-palette: map.merge(
     // couleur principale
     300: #286e70,
     // accent
-    400: #10111a // fond global (le plus foncé),
+    400: #10111a // fond global (le plus foncé),,
   )
 );
 
@@ -67,16 +67,15 @@ body * {
 
 /* Permet à <mat-icon> d’utiliser bien la police Material Icons */
 .material-icons {
-  font-family: 'Material Icons' !important;
+  font-family: "Material Icons" !important;
 }
-
 
 /* === Variables de couleur === */
 :root {
-  --my-dark-color: #10111a; 
-  --my-light-color: #ebe8e3; 
-  --my-blue-color: #286e70; 
-  --my-green-color: #b2b1a7; 
+  --my-dark-color: #10111a;
+  --my-light-color: #ebe8e3;
+  --my-blue-color: #286e70;
+  --my-green-color: #b2b1a7;
   --my-pink-color: #8f5381;
 }
 
@@ -113,3 +112,11 @@ body * {
 .bg-my-pink-color {
   background-color: var(--my-pink-color);
 }
+
+@media screen and (max-width: 768px) {
+  body * {
+    font-size: 14px;
+  }
+}
+
+

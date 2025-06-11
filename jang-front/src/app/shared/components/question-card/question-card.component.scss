@@ -42,3 +42,45 @@ mat-card-title {
 .answer {
   white-space: pre-wrap;
 }
+
+// Tablettes et petits écrans (≤ 768px)
+@media screen and (max-width: 768px) {
+  mat-card {
+    width: 90%;       
+    max-width: none;       
+    min-height: 400px;   
+    padding: 16px;      
+    margin: auto;   
+  }
+
+  mat-card-header {
+    flex-direction: column; 
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  mat-card-title {
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .question, .answer {
+    margin: 12px 0;
+  }
+
+  mat-card-actions {
+    display: flex;
+    flex-wrap: wrap;   
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  mat-card-actions button {
+    flex: 1 1 45%;    
+    min-width: 120px;
+    padding: 8px 0;
+  }
+
+}
+

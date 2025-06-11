@@ -13,20 +13,18 @@
   padding-bottom: 20px;
 }
 
-/* Conteneur vertical */
 .jauge-vertical {
   display: flex;
-  flex-direction: column-reverse; /* empile du bas vers le haut */
+  flex-direction: column-reverse; 
   width: 25px;
   height: 315px;
   border-radius: 6px;
   overflow: hidden;
-  background: var(--my-dark-color); /* partie non évaluée */
+  background: var(--my-dark-color); 
   border: var(--my-light-color);
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Sections colorées */
 .jauge-section {
   width: 100%;
   transition: height 0.4s ease-in-out;
@@ -59,3 +57,31 @@
     flex-direction: row;
     gap: 10px;
 }
+
+// Tablettes et mobiles
+@media screen and (max-width: 768px) {
+  .global-container {
+    width: 90%;
+    max-width: none;
+    gap: 16px;
+    padding-bottom: 16px;
+    margin: auto;
+  }
+
+  .jauge-vertical {
+    flex-direction: row;
+    width: 90%;
+    height: 20px;
+  }
+
+  .jauge-section {
+    height: 100%;
+    transition: width 0.4s ease-in-out;
+  }
+
+  .stats {
+    gap: 8px;
+  }
+}
+
+
