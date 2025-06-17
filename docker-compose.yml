@@ -1,5 +1,25 @@
+version: "3.8"
+
 # docker-compose.yml
 services:
+  # ───────────── Reverse proxy ─────────────
+  traefik:
+    image: traefik:v2.11
+    restart: unless-stopped
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.leresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.leresolver.acme.email=ton.email@exemple.com"
+      - "--certificatesresolvers.leresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
   # ───────────── Base de données ─────────────
   mysql:
     image: mysql:8.4
@@ -26,6 +46,12 @@ services:
        context: ./jang
   #  ports:
   #     - "127.0.0.1:8080:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`jang-questions.eu`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=leresolver"
+      - "traefik.http.services.api.loadbalancer.server.port=8080"
     environment:
       DATA_USERNAME: ${DATA_USERNAME}
       DATA_PASSWORD: ${DATA_PASSWORD}
@@ -40,6 +66,12 @@ services:
 
   front:
     build: ./jang-front
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.front.rule=Host(`jang-questions.eu`)"
+      - "traefik.http.routers.front.entrypoints=websecure"
+      - "traefik.http.routers.front.tls.certresolver=leresolver"
+      - "traefik.http.services.front.loadbalancer.server.port=80"
     ports:
       - "80:80"
     depends_on:
@@ -53,6 +85,12 @@ services:
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jenkins.rule=Host(`jenkins.jang-questions.eu`)"
+      - "traefik.http.routers.jenkins.entrypoints=websecure"
+      - "traefik.http.routers.jenkins.tls.certresolver=leresolver"
+      - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
 
 volumes:
   dbdata:
