@@ -12,7 +12,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.leresolver.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.leresolver.acme.email=ton.email@exemple.com"
+      - "--certificatesresolvers.leresolver.acme.email=baudry.ddf@gmail.com"
       - "--certificatesresolvers.leresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
