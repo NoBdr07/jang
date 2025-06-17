@@ -41,7 +41,7 @@ services:
   front:
     build: ./jang-front
     ports:
-      - "4200:80"
+      - "80:80"
     depends_on:
       - back      
   
