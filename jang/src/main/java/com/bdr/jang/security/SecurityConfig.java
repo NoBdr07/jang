@@ -56,8 +56,8 @@ public class SecurityConfig {
                 }))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Pas de sessions
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/auth/**", "/questions/**", "/topics/**").permitAll() // Routes publiques
-                        .requestMatchers("/users/**", "/questions/**", "/topics/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/auth/**", "/questions/**", "/topics/**", "/api/auth/**", "/api/questions/**", "/api/topics/**").permitAll() // Routes publiques
+                        .requestMatchers("/users/**", "/questions/**", "/topics/**", "/api/users/**", "/api/questions/**", "/api/topics/**").hasRole("ADMIN")
                         .anyRequest().authenticated() // Toute autre route nécessite une authentification
                 );
 
