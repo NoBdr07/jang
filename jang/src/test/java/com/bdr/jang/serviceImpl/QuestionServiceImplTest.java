@@ -48,17 +48,17 @@ class QuestionServiceImplTest {
     void setUp() {
         // Création des entités
         t1 = Topic.builder()
-                .id(1L)
+                .id(1)
                 .name("Topic1")
                 .build();
 
         t2 = Topic.builder()
-                .id(2L)
+                .id(2)
                 .name("Topic2")
                 .build();
 
         q1 = Question.builder()
-                .id(1L)
+                .id(1)
                 .title("Titre de la question 1 ?")
                 .answer("Réponse de la quesion 1.")
                 .level(1)
@@ -66,7 +66,7 @@ class QuestionServiceImplTest {
                 .build();
 
         q2 = Question.builder()
-                .id(2L)
+                .id(2)
                 .title("Titre de la question 2 ?")
                 .answer("Réponse de la quesion 2.")
                 .level(1)
@@ -78,7 +78,7 @@ class QuestionServiceImplTest {
 
         // Création des DTO correspondants
         q1DTO = QuestionDTO.builder()
-                .id(1L)
+                .id(1)
                 .title("Titre de la question 1 ?")
                 .answer("Réponse de la quesion 1.")
                 .level(1)
@@ -86,7 +86,7 @@ class QuestionServiceImplTest {
                 .build();
 
         q2DTO = QuestionDTO.builder()
-                .id(2L)
+                .id(2)
                 .title("Titre de la question 2 ?")
                 .answer("Réponse de la quesion 2.")
                 .level(1)
@@ -128,30 +128,30 @@ class QuestionServiceImplTest {
     @Test
     void getQuestionById_shouldReturnQuestionDTO() {
         // GIVEN
-        when(questionRepository.findById(1L)).thenReturn(Optional.of(q1));
+        when(questionRepository.findById(1)).thenReturn(Optional.of(q1));
         when(questionMapper.mapToDTO(q1)).thenReturn(q1DTO);
 
         // WHEN
-        QuestionDTO result = questionService.getQuestionById(1L);
+        QuestionDTO result = questionService.getQuestionById(1);
 
         // THEN
         assertEquals(result, q1DTO);
-        verify(questionRepository, times(1)).findById(1L);
+        verify(questionRepository, times(1)).findById(1);
         verify(questionMapper, times(1)).mapToDTO(q1);
     }
 
     @Test
     void getQuestionById_shouldThrowWhenNotFound() {
         // GIVEN
-        when(questionRepository.findById(1L)).thenReturn(Optional.empty());
+        when(questionRepository.findById(1)).thenReturn(Optional.empty());
 
         // WHEN & THEN
         EntityNotFoundException ex = assertThrows(
-                EntityNotFoundException.class, () -> questionService.getQuestionById(1L)
+                EntityNotFoundException.class, () -> questionService.getQuestionById(1)
         );
 
         assertTrue(ex.getMessage().contains("Question not found with id : 1"));
-        verify(questionRepository).findById(1L);
+        verify(questionRepository).findById(1);
 
     }
 
@@ -175,7 +175,7 @@ class QuestionServiceImplTest {
     @Test
     void deleteQuestion_shouldInvokeRepositoryDeleteById() {
         // GIVEN
-        Long idToDelete = 42L;
+        Integer idToDelete = 42;
         doNothing().when(questionRepository).deleteById(idToDelete);
 
         // WHEN

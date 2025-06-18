@@ -41,7 +41,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public TopicDTO getTopicById(Long id) {
+    public TopicDTO getTopicById(Integer id) {
         Topic topic = topicRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("No topic found with id : " + id));
         return topicMapper.mapToDto(topic);
@@ -62,7 +62,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void deleteTopic(Long id) {
+    public void deleteTopic(Integer id) {
         topicRepository.deleteById(id);
     }
 }

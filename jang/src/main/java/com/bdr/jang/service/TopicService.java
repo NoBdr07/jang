@@ -8,9 +8,9 @@ import java.util.List;
 public interface TopicService {
 
     List<TopicDTO> getAllTopics();
-    TopicDTO getTopicById(Long id);
+    TopicDTO getTopicById(Integer id);
     TopicDTO getTopicByName(String name);
     Topic findTopicEntityByName(String name);
     TopicDTO createTopic(TopicDTO topicDTO);
-    void deleteTopic(Long id);
+    void deleteTopic(Integer id);
 }

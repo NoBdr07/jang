@@ -41,7 +41,7 @@ public class QuestionController {
     }
 
     @GetMapping("/id/{questionId}")
-    public ResponseEntity<QuestionDTO> getQuestionById(@PathVariable("questionId") Long id) {
+    public ResponseEntity<QuestionDTO> getQuestionById(@PathVariable("questionId") Integer id) {
         QuestionDTO question = questionService.getQuestionById(id);
         return ResponseEntity.ok(question);
     }
@@ -63,7 +63,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("/{questionId}")
-    public ResponseEntity<?> deleteQuestion(@PathVariable Long questionId) {
+    public ResponseEntity<?> deleteQuestion(@PathVariable Integer questionId) {
         questionService.deleteQuestion(questionId);
         return ResponseEntity.ok("Question deleted");
     }
@@ -77,7 +77,7 @@ public class QuestionController {
      */
     @PutMapping("/{questionId}")
     public ResponseEntity<QuestionDTO> updateQuestion(
-            @PathVariable Long questionId,
+            @PathVariable Integer questionId,
             @Valid @RequestBody QuestionDTO questionDTO
     ) {
         // On force le DTO à avoir l’ID de la ressource à mettre à jour

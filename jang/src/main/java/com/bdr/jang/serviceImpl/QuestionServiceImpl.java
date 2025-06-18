@@ -48,7 +48,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public QuestionDTO getQuestionById(Long id) {
+    public QuestionDTO getQuestionById(Integer id) {
         Question question = questionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Question not found with id : " + id));
         return questionMapper.mapToDTO(question);
@@ -62,7 +62,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void deleteQuestion(Long id) {
+    public void deleteQuestion(Integer id) {
         questionRepository.deleteById(id);
     }
 
@@ -87,7 +87,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDTO updateQuestion(QuestionDTO dto) {
-        Long id = dto.getId();
+        Integer id = dto.getId();
         // 1. Vérifier que la question existe
         Question existing = questionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Question not found with id : " + id));

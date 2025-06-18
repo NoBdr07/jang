@@ -39,17 +39,17 @@ class TopicServiceImplUnitTest {
     @BeforeEach
     void setUp() {
         topic1 = Topic.builder()
-                .id(1L)
+                .id(1)
                 .name("Sujet A")
                 .build();
 
         topic2 = Topic.builder()
-                .id(2L)
+                .id(2)
                 .name("Sujet B")
                 .build();
 
-        dto1 = new TopicDTO(1L, "Sujet A");
-        dto2 = new TopicDTO(2L, "Sujet B");
+        dto1 = new TopicDTO(1, "Sujet A");
+        dto2 = new TopicDTO(2, "Sujet B");
     }
 
     @Test
@@ -87,10 +87,10 @@ class TopicServiceImplUnitTest {
 
     @Test
     void getTopicById_found() {
-        given(topicRepository.findById(1L)).willReturn(Optional.of(topic1));
+        given(topicRepository.findById(1)).willReturn(Optional.of(topic1));
         given(topicMapper.mapToDto(topic1)).willReturn(dto1);
 
-        TopicDTO result = topicService.getTopicById(1L);
+        TopicDTO result = topicService.getTopicById(1);
 
         assertNotNull(result);
         assertEquals(dto1, result);
@@ -98,10 +98,10 @@ class TopicServiceImplUnitTest {
 
     @Test
     void getTopicById_notFound() {
-        given(topicRepository.findById(99L)).willReturn(Optional.empty());
+        given(topicRepository.findById(99)).willReturn(Optional.empty());
 
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class,
-                () -> topicService.getTopicById(99L));
+                () -> topicService.getTopicById(99));
 
         assertTrue(ex.getMessage().contains("No topic found with id : 99"));
     }
@@ -133,9 +133,9 @@ class TopicServiceImplUnitTest {
         Topic newTopic = new Topic();
         newTopic.setName("Nouveau");
         Topic savedTopic = new Topic();
-        savedTopic.setId(3L);
+        savedTopic.setId(3);
         savedTopic.setName("Nouveau");
-        TopicDTO savedDto = new TopicDTO(3L, "Nouveau");
+        TopicDTO savedDto = new TopicDTO(3, "Nouveau");
 
         given(topicMapper.mapToEntity(newDto)).willReturn(newTopic);
         given(topicRepository.save(newTopic)).willReturn(savedTopic);
@@ -149,10 +149,10 @@ class TopicServiceImplUnitTest {
 
     @Test
     void deleteTopic_invokesRepository() {
-        doNothing().when(topicRepository).deleteById(1L);
+        doNothing().when(topicRepository).deleteById(1);
 
-        topicService.deleteTopic(1L);
+        topicService.deleteTopic(1);
 
-        verify(topicRepository, times(1)).deleteById(1L);
+        verify(topicRepository, times(1)).deleteById(1);
     }
 }

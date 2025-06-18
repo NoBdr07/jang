@@ -11,9 +11,9 @@ public interface QuestionService {
 
     Page<QuestionDTO> getAllQuestions(Pageable pageable);
     Page<QuestionDTO> getQuestionsByFilter(List<Integer> niveau, List<String> topics, Pageable pageable);
-    QuestionDTO getQuestionById(Long id);
+    QuestionDTO getQuestionById(Integer id);
     QuestionDTO createQuestion(QuestionDTO questionDTO);
-    void deleteQuestion(Long id);
+    void deleteQuestion(Integer id);
 
     /**
      * Met à jour une question existante.
