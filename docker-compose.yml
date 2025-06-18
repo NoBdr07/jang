@@ -50,6 +50,7 @@ services:
       - "traefik.http.routers.api.tls.certresolver=leresolver"
       - "traefik.http.services.api.loadbalancer.server.port=8080"
     environment:
+      SPRING_PROFILES_ACTIVE: prod
       DATA_USERNAME: ${DATA_USERNAME}
       DATA_PASSWORD: ${DATA_PASSWORD}
       SECURITY_USERNAME: ${SECURITY_USERNAME}
