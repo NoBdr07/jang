@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class QuestionDTO {
 
-    private Long id;
+    private Integer id;
 
     @NotBlank(message = "Le titre ne doit pas être vide.")
     private String title;

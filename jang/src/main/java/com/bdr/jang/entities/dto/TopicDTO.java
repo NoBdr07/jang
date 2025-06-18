@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TopicDTO {
 
-    private Long id;
+    private Integer id;
     private String name;
 }
