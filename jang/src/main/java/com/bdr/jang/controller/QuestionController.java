@@ -16,7 +16,7 @@ import java.util.List;
  * REST controller for CRUD operations on questions
  */
 @RestController
-@RequestMapping("/questions")
+@RequestMapping("/api/questions")
 public class QuestionController {
 
     private final QuestionService questionService;
