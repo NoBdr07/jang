@@ -31,12 +31,12 @@ class QuestionMapperTest {
     void setUp() {
 
         topic = Topic.builder()
-                .id(1L)
+                .id(1)
                 .name("topic")
                 .build();
 
         question = Question.builder()
-                .id(1L)
+                .id(1)
                 .title("title")
                 .answer("answer")
                 .level(1)
@@ -44,7 +44,7 @@ class QuestionMapperTest {
                 .build();
 
         questionDTO = QuestionDTO.builder()
-                .id(1L)
+                .id(1)
                 .title("title")
                 .answer("answer")
                 .level(1)

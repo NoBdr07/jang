@@ -41,8 +41,8 @@ class TopicControllerUnitTest {
     void getAllTopics_shouldReturnListOfTopics() throws Exception {
         // GIVEN
         List<TopicDTO> topics = Arrays.asList(
-                new TopicDTO(1L, "Sujet A"),
-                new TopicDTO(2L, "Sujet B")
+                new TopicDTO(1, "Sujet A"),
+                new TopicDTO(2, "Sujet B")
         );
         given(topicService.getAllTopics()).willReturn(topics);
 

@@ -24,12 +24,12 @@ class TopicMapperTest {
     void setUp() {
 
         topic = Topic.builder()
-                .id(1L)
+                .id(1)
                 .name("topic")
                 .build();
 
         topicDTO = TopicDTO.builder()
-                .id(1L)
+                .id(1)
                 .name("topic")
                 .build();
 

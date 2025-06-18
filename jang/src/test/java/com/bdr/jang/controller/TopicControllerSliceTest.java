@@ -38,8 +38,8 @@ public class TopicControllerSliceTest {
     @Test
     void getAllTopics_shouldReturnListOfTopics() throws Exception {
         List<TopicDTO> topics = List.of(
-                new TopicDTO(1L, "Sujet A"),
-                new TopicDTO(2L, "Sujet B")
+                new TopicDTO(1, "Sujet A"),
+                new TopicDTO(2, "Sujet B")
         );
         given(topicService.getAllTopics()).willReturn(topics);
 
