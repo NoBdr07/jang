@@ -4,20 +4,24 @@ mat-card {
   min-height: 500px;
   width: 40vw;
   background-color: var(--my-dark-color);
-  color: var(--my-light-color);
+  color: var(--my-green-color);
   justify-content: space-between;
   align-items: center;
-  border: solid 1px var(--my-light-color);
+  border: solid 1px var(--my-green-color);
   border-radius: 8px;
 }
 
 mat-card-header {
   width: 100%;
-  border-bottom: solid 1px var(--my-light-color);
+  border-bottom: solid 1px var(--my-green-color);
 }
 
 ::ng-deep .mat-mdc-card-header-text {
   width: 100%;
+}
+
+::ng-deep .mat-mdc-button:not(:disabled) {
+  color: var(--my-green-color) !important;
 }
 
 mat-card-title {

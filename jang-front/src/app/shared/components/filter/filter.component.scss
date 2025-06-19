@@ -23,20 +23,20 @@
 
 .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
   background-color: var(--my-dark-color);
-  border: var(--my-light-color) !important;
+  border: var(--my-green-color) !important;
 }
 
 .mat-button-toggle-appearance-standard {
   background-color: var(--my-dark-color);
-  border: var(--my-light-color) !important;
+  border: var(--my-green-color) !important;
 }
 
 ::ng-deep .mdc-evolution-chip__text-label {
-  color: var(--my-light-color) !important;
+  color: var(--my-green-color) !important;
 }
 
 ::ng-deep .mat-button-toggle-label-content {
-  color: var(--my-light-color) !important;
+  color: var(--my-green-color) !important;
 }
 
 // Tablettes et petits écrans (≤ 768px)

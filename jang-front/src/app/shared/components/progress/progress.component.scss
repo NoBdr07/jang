@@ -5,12 +5,16 @@
   color: var(--my-light-color);
   justify-content: space-between;
   align-items: center;
-  border: solid 1px var(--my-light-color);
+  border: solid 1px var(--my-green-color);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding-bottom: 20px;
+}
+
+.global-container p {
+  color: var(--my-green-color);
 }
 
 .jauge-vertical {
@@ -21,7 +25,7 @@
   border-radius: 6px;
   overflow: hidden;
   background: var(--my-dark-color); 
-  border: var(--my-light-color);
+  border: var(--my-green-color);
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 

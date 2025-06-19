@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
@@ -49,9 +50,11 @@ public class QuestionController {
     @GetMapping("/filter")
     public ResponseEntity<Page<QuestionDTO>> getFilteredQuestions(
             @RequestParam(required = false) List<Integer> niveaux,
-            @RequestParam(required = false) List<String> topics,
+            @RequestParam MultiValueMap<String, String> params,
             Pageable pageable
     ) {
+        List<String> topics = params.getOrDefault("topics", List.of());
+
         Page<QuestionDTO> filteredQuestions = questionService.getQuestionsByFilter(niveaux, topics, pageable);
         return ResponseEntity.ok(filteredQuestions);
     }
