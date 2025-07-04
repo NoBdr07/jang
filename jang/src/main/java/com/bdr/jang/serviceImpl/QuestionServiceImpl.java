@@ -68,7 +68,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Page<QuestionDTO> getQuestionsByFilter
-            (List<Integer> niveaux, List<String> topics, Pageable pageable) {
+            (List<Integer> niveaux, List<String> topics, Pageable pageable, boolean random) {
 
         List<String> trimmedTopics = null;
         if(topics != null) {
@@ -79,9 +79,16 @@ public class QuestionServiceImpl implements QuestionService {
 
         Specification<Question> spec = Specification
                 .where(QuestionSpecs.hasLevels(niveaux))
-                .and(QuestionSpecs.hasTopics(trimmedTopics))
-                .and(QuestionSpecs.randomOrder());
-        return questionRepository.findAll(spec, pageable)
+                .and(QuestionSpecs.hasTopics(trimmedTopics));
+
+        // aléa optionnel
+        if (random) spec = spec.and(QuestionSpecs.randomOrder());
+
+        Pageable pageRequest = random
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.unsorted())
+                : pageable;
+
+        return questionRepository.findAll(spec, pageRequest)
                 .map(questionMapper::mapToDTO);
     }
 

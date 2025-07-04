@@ -14,17 +14,22 @@ export class QuestionService {
   constructor(private http: HttpClient) {}
 
   getFilteredQuestions(
-    niveau?: number[],
+    niveaux?: number[],
     topics?: string[],
     page = 0,
-    size = 10
+    size = 10,
+    random = true,
+    sort = 'id,asc'
   ): Observable<Page<QuestionDTO>> {
     let params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString());
+      .set('size', size.toString())
+      .set('random', random);
 
-    if (niveau && niveau.length) {
-      params = params.set('niveau', niveau.toString());
+      if (!random) { params = params.set('sort', sort); } // tri si besoin
+
+    if (niveaux && niveaux.length) {
+      params = params.set('niveaux', niveaux.toString());
     }
 
     if (topics && topics.length) {

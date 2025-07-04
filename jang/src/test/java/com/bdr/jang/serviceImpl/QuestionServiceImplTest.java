@@ -201,7 +201,7 @@ class QuestionServiceImplTest {
         when(questionMapper.mapToDTO(q2)).thenReturn(q2DTO);
 
         // WHEN
-        Page<QuestionDTO> result = questionService.getQuestionsByFilter(niveaux, topics, pageable);
+        Page<QuestionDTO> result = questionService.getQuestionsByFilter(niveaux, topics, pageable, true);
 
         // THEN
         assertEquals(questionDTOPage, result);

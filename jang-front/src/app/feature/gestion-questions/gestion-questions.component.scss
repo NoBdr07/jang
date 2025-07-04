@@ -42,7 +42,7 @@
   }
 
   .question-form-container {
-    margin : 32px 0;
+    margin: 32px 0;
     padding: 16px;
     background-color: var(--my-green-color);
     border-radius: 6px;
@@ -74,13 +74,17 @@
 }
 
 ::ng-deep .mat-mdc-icon-button.mat-primary {
-    --mdc-icon-button-icon-color: var(--my-blue-color) !important;
+  --mdc-icon-button-icon-color: var(--my-blue-color) !important;
 }
 
 ::ng-deep .mat-mdc-icon-button.mat-warn {
-    --mdc-icon-button-icon-color: var(--my-pink-color) !important;
+  --mdc-icon-button-icon-color: var(--my-pink-color) !important;
 }
 
 .answer {
   white-space: pre-wrap;
+}
+
+::ng-deep .mat-mdc-paginator {
+  background-color: var(--my-green-color) !important;
 }

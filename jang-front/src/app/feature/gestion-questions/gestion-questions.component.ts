@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, ViewChild } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -11,7 +17,11 @@ import { QuestionDTO } from '../../shared/models/question.model';
 import { MatIconModule } from '@angular/material/icon';
 import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
 import { TopicService } from '../../services/topic.service';
-
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-gestion-questions',
@@ -25,7 +35,8 @@ import { TopicService } from '../../services/topic.service';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatPaginatorModule,
   ],
   templateUrl: './gestion-questions.component.html',
   styleUrl: './gestion-questions.component.scss',
@@ -36,6 +47,12 @@ export class GestionQuestionsComponent {
   selectedTopic: string | null = null;
   selectedLevel: number | null = null;
   displayedColumns: string[] = ['id', 'title', 'level', 'topicName', 'actions'];
+
+  // pagination
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  totalElements = 0;
+  pageSize = 20;
+  pageIndex = 0;
 
   showForm = false;
   editingQuestion: QuestionDTO | null = null;
@@ -64,10 +81,19 @@ export class GestionQuestionsComponent {
   }
 
   loadQuestions(): void {
+    console.log("selectedLevel = " + this.selectedLevel);
     const niveaux = this.selectedLevel ? [this.selectedLevel] : [];
+    console.log("niveaux = " + niveaux);
     const topics = this.selectedTopic ? [this.selectedTopic] : [];
+
     this.questionService
-      .getFilteredQuestions(niveaux, topics, 0, 50)
+      .getFilteredQuestions(
+        niveaux,
+        topics,
+        this.pageIndex,
+        this.pageSize,
+        false
+      )
       .pipe(
         catchError((err) => {
           console.error('Erreur au chargement des questions', err);
@@ -77,14 +103,11 @@ export class GestionQuestionsComponent {
         })
       )
       .subscribe((page) => {
-        this.questions = page.content; // on suppose Page<T> a une propriété content
+        this.questions = page.content;
+        this.totalElements = page.totalElements;
       });
   }
 
-  selectTopic(name: string): void {
-    this.selectedTopic = this.selectedTopic === name ? null : name;
-    this.loadQuestions();
-  }
 
   onAddNew(): void {
     this.editingQuestion = null;
@@ -116,6 +139,12 @@ export class GestionQuestionsComponent {
     this.questionForm.reset();
   }
 
+  onPageChange(e: PageEvent) {
+    this.pageIndex = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.loadQuestions();
+  }
+
   onSubmit(): void {
     if (this.questionForm.invalid) return;
 
@@ -125,7 +154,7 @@ export class GestionQuestionsComponent {
       // Mise à jour
       formValue.id = this.editingQuestion.id;
       this.questionService.updateQuestion(formValue).subscribe({
-        next: (updated) => {
+        next: () => {
           this.loadQuestions();
           this.showForm = false;
         },

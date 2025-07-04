@@ -51,12 +51,13 @@ public class QuestionController {
     public ResponseEntity<Page<QuestionDTO>> getFilteredQuestions(
             @RequestParam(required = false) List<Integer> niveaux,
             @RequestParam MultiValueMap<String, String> params,
+            @RequestParam(defaultValue = "false") boolean random,
             Pageable pageable
     ) {
         List<String> topics = params.getOrDefault("topics", List.of());
 
-        Page<QuestionDTO> filteredQuestions = questionService.getQuestionsByFilter(niveaux, topics, pageable);
-        return ResponseEntity.ok(filteredQuestions);
+        Page<QuestionDTO> page = questionService.getQuestionsByFilter(niveaux, topics, pageable, random);
+        return ResponseEntity.ok(page);
     }
 
     @PostMapping()

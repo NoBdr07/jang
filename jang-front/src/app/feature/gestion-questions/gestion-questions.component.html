@@ -8,7 +8,6 @@
       <mat-label>Topic</mat-label>
       <mat-select
         [(ngModel)]="selectedTopic"
-        (selectionChange)="loadQuestions()"
       >
         <mat-option [value]="null">Tous</mat-option>
         <mat-option *ngFor="let t of topics$ | async" [value]="t.name">
@@ -22,7 +21,6 @@
       <mat-select
         [(ngModel)]="selectedLevel"
         placeholder="Tous niveaux"
-        (selectionChange)="loadQuestions()"
       >
         <mat-option [value]="null">Tous</mat-option>
         <mat-option *ngFor="let lvl of levels" [value]="lvl">
@@ -108,7 +106,8 @@
   </div>
 
   <!-- TABLEAU DES QUESTIONS -->
-  <table mat-table [dataSource]="questions" class="mat-elevation-z8">
+  <table mat-table [dataSource]="questions" class="mat-elevation-z8">  
+
     <!-- Colonne ID -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>ID</th>
@@ -149,4 +148,13 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+
+   <mat-paginator
+      [length]="totalElements"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="[10, 20, 50]"
+      showFirstLastButtons
+      (page)="onPageChange($event)">
+    </mat-paginator>
 </div>
