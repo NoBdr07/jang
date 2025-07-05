@@ -37,7 +37,7 @@ public class UserQuestionStatMapper {
         User user = userService.findUserEntityById(dto.getUserId());
 
         Question question = questionService.getQuestionEntityById(dto.getQuestionId());
-        
+
         return UserQuestionStat.builder()
                 .id(dto.getId())
                 .user(user)

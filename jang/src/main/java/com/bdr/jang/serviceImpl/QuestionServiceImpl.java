@@ -5,17 +5,18 @@ import com.bdr.jang.entities.mapper.QuestionMapper;
 import com.bdr.jang.entities.model.Question;
 import com.bdr.jang.entities.model.Topic;
 import com.bdr.jang.entities.specification.QuestionSpecs;
+import com.bdr.jang.repository.Candidate;
 import com.bdr.jang.repository.QuestionRepository;
 import com.bdr.jang.repository.TopicRepository;
 import com.bdr.jang.service.QuestionService;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,5 +123,66 @@ public class QuestionServiceImpl implements QuestionService {
         return questionMapper.mapToDTO(saved);
     }
 
+    @Override
+    public Page<QuestionDTO> getAdaptiveQuestions(
+            List<Integer> niveaux,
+            List<String> topics,
+            Long userId,
+            int pageSize) {
+
+        // On récupère un pool élargi pour ensuite le trier
+        int poolSize = pageSize * 8;
+        Pageable poolPage = PageRequest.of(0, poolSize, Sort.unsorted());
+
+        List<Candidate> pool = questionRepository
+                .findCandidatesWithStats(niveaux, topics, userId, poolPage);
+
+        // Pondération + tirage aléatoire
+        LocalDate today = LocalDate.now();
+
+        record Scored(Question question, double priority) {}
+
+        List<Scored> scored = pool.stream()
+                .map(c -> {
+                    int score = c.stat() == null ? -1 : c.stat().getLastScore();
+                    long days = c.stat() == null
+                            ? Long.MAX_VALUE
+                            : ChronoUnit.DAYS.between(
+                                    c.stat().getLastTimeSeen(), today);
+
+                    double base = switch (score) {
+                        case -1 -> 1.0;   // jamais vue
+                        case  0 -> 0.8;   // KO
+                        case  1 -> 0.5;   // BOF
+                        default -> 0.2;   // OK
+                    };
+                    double ageFactor = 1.0 + Math.min(days / 7.0, 3.0);
+                    double priority = Math.random() / (base * ageFactor);
+
+                    return new Scored(c.question(), priority);
+                })
+                .sorted(Comparator.comparingDouble(Scored::priority))
+                .limit(pageSize)
+                .toList();
+
+        // Conversion en Page<QuestionDTO>
+        List<QuestionDTO> dtos = scored.stream()
+                .map(s -> questionMapper.mapToDTO(s.question()))
+                .toList();
+
+        return new PageImpl<>(dtos, PageRequest.of(0, pageSize), dtos.size());
+
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+

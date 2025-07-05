@@ -11,6 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -47,6 +48,7 @@ public class QuestionController {
         return ResponseEntity.ok(question);
     }
 
+    // récuperer questions suivant sujet/niveaux, aléatoire ou non aléatoire
     @GetMapping("/filter")
     public ResponseEntity<Page<QuestionDTO>> getFilteredQuestions(
             @RequestParam(required = false) List<Integer> niveaux,
@@ -57,6 +59,26 @@ public class QuestionController {
         List<String> topics = params.getOrDefault("topics", List.of());
 
         Page<QuestionDTO> page = questionService.getQuestionsByFilter(niveaux, topics, pageable, random);
+        return ResponseEntity.ok(page);
+    }
+
+    // récupérer questions quand connecté, en fonction de notre progression
+    @GetMapping("/adaptive")
+    public ResponseEntity<Page<QuestionDTO>> getAdaptiveQuestions(
+            @RequestParam(required = false) List<Integer> niveaux,
+            @RequestParam(required = false) List<String> topics,
+            @RequestParam(defaultValue = "10")               int size,
+            Principal principal
+    ) {
+        // 1. Qui est l’utilisateur ?
+        Long userId = (principal == null)
+                ? null
+                : Long.valueOf(principal.getName());
+
+        // 2. Appel du service : pas besoin de "page", on renvoie toujours 1 page de 'size'
+        Page<QuestionDTO> page = questionService.getAdaptiveQuestions(
+                niveaux, topics, userId, size);
+
         return ResponseEntity.ok(page);
     }
 

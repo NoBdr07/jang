@@ -24,4 +24,19 @@ public interface QuestionService {
      * @throws EntityNotFoundException si l’ID n’existe pas, ou si le topicName n’est pas trouvé
      */
     QuestionDTO updateQuestion(QuestionDTO questionDto);
+
+    /**
+     * Renvoie une page de questions adaptées à l’utilisateur.
+     *
+     * @param niveaux   filtres éventuels de niveaux
+     * @param topics    filtres éventuels de topics
+     * @param userId    identifiant de l’utilisateur (null si visiteur non connecté)
+     * @param pageSize  nombre de questions à renvoyer (ex. 10)
+     */
+    Page<QuestionDTO> getAdaptiveQuestions(
+            List<Integer> niveaux,
+            List<String> topics,
+            Long userId,
+            int pageSize
+    );
 }
