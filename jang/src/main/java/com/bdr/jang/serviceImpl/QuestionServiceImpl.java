@@ -55,6 +55,12 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public Question getQuestionEntityById(Integer id) {
+        return questionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Question not found id=" + id));
+    }
+
+    @Override
     public QuestionDTO createQuestion(QuestionDTO questionDto) {
         Question question = questionMapper.mapToEntity(questionDto);
         Question saved = questionRepository.save(question);

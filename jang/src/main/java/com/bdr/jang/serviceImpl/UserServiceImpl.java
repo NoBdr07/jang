@@ -10,6 +10,7 @@ import com.bdr.jang.exception.UsernameAlreadyTakenException;
 import com.bdr.jang.repository.UserRepository;
 import com.bdr.jang.service.UserService;
 import com.bdr.jang.util.JwtUtils;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -72,6 +73,21 @@ public class UserServiceImpl implements UserService {
                         new RuntimeException("No role found for this user"));
 
         return jwtUtils.generateToken(auth.getName(), role);
+    }
+
+    @Override
+    public User findUserEntityById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Utilisateur non trouvé pour id = " + id));
+    }
+
+    @Override
+    public UserDTO findUserById(Long id) {
+        return userRepository.findById(id)
+                .map(userMapper::mapToDto)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Utilisateur non trouvé pour id = " + id));
     }
 
 }

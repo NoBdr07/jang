@@ -1,6 +1,7 @@
 package com.bdr.jang.service;
 
 import com.bdr.jang.entities.dto.QuestionDTO;
+import com.bdr.jang.entities.model.Question;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,8 @@ public interface QuestionService {
 
     Page<QuestionDTO> getAllQuestions(Pageable pageable);
     Page<QuestionDTO> getQuestionsByFilter(List<Integer> niveau, List<String> topics, Pageable pageable, boolean random);
-    QuestionDTO getQuestionById(Integer id);
+    QuestionDTO getQuestionById(Integer id);     // pour vos API
+    Question getQuestionEntityById(Integer id);
     QuestionDTO createQuestion(QuestionDTO questionDTO);
     void deleteQuestion(Integer id);
 

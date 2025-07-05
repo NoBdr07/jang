@@ -16,6 +16,12 @@ public class UserQuestionStatDTO {
 
     private Integer id;
 
+    @NotNull(message = "L’ID de l’utilisateur est requis")
+    private Long userId;
+
+    @NotNull(message = "L’ID de la question est requis")
+    private Integer questionId;
+
     @NotNull(message = "La date du dernier passage est requise")
     private LocalDateTime lastTimeSeen;
 
