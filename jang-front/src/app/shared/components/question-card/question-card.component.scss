@@ -47,10 +47,6 @@ mat-card-title {
   white-space: pre-wrap;
 }
 
-button {
-  background-color: var(--my-green-color) !important;
-}
-
 // Tablettes et petits écrans (≤ 768px)
 @media screen and (max-width: 768px) {
   mat-card {

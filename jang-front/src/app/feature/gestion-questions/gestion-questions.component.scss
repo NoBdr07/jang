@@ -85,6 +85,10 @@
   white-space: pre-wrap;
 }
 
+button {
+  background-color: var(--my-green-color) !important;
+}
+
 ::ng-deep .mat-mdc-paginator {
   background-color: var(--my-green-color) !important;
   border-radius: 8px;
