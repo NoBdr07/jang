@@ -2,6 +2,7 @@ package com.bdr.jang.controller;
 
 import com.bdr.jang.entities.dto.QuestionDTO;
 import com.bdr.jang.service.QuestionService;
+import com.bdr.jang.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +24,11 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    public QuestionController(QuestionService questionService) {
+    private final UserService userService;
+
+    public QuestionController(QuestionService questionService, UserService userService) {
         this.questionService = questionService;
+        this.userService = userService;
     }
 
     /**
@@ -73,7 +77,7 @@ public class QuestionController {
         // 1. Qui est l’utilisateur ?
         Long userId = (principal == null)
                 ? null
-                : Long.valueOf(principal.getName());
+                : userService.getUserIdByUsername(principal.getName());
 
         // 2. Appel du service : pas besoin de "page", on renvoie toujours 1 page de 'size'
         Page<QuestionDTO> page = questionService.getAdaptiveQuestions(

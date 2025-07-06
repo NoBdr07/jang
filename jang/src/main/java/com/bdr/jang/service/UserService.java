@@ -12,4 +12,5 @@ public interface UserService {
     String login(LoginRequest req);
     UserDTO findUserById(Long id);
     User    findUserEntityById(Long id);
+    Long getUserIdByUsername(String username);
 }

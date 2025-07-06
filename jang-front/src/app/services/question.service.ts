@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { QuestionDTO } from '../shared/models/question.model';
 import { Page } from '../shared/models/page.model';
 import { catchError, Observable, throwError } from 'rxjs';
+import { AttemptLight } from '../shared/models/attempt-light.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ export class QuestionService {
 
   constructor(private http: HttpClient) {}
 
+  // - RECUPERER LES QUESTIONS ALEATOIRE OU NON -
   getFilteredQuestions(
     niveaux?: number[],
     topics?: string[],
@@ -26,7 +28,9 @@ export class QuestionService {
       .set('size', size.toString())
       .set('random', random);
 
-      if (!random) { params = params.set('sort', sort); } // tri si besoin
+    if (!random) {
+      params = params.set('sort', sort);
+    } // tri si besoin
 
     if (niveaux && niveaux.length) {
       params = params.set('niveaux', niveaux.toString());
@@ -38,13 +42,29 @@ export class QuestionService {
       });
     }
 
-    return this.http.get<Page<QuestionDTO>>(`${this.url}/filter`, { params })
-    .pipe(
-        catchError(err => {
-            console.error("get filtered questions failed : " + err);
-            return throwError(() => new Error('Impossible de charger les questions'));
+    return this.http
+      .get<Page<QuestionDTO>>(`${this.url}/filter`, { params })
+      .pipe(
+        catchError((err) => {
+          console.error('get filtered questions failed : ' + err);
+          return throwError(
+            () => new Error('Impossible de charger les questions')
+          );
         })
-    );
+      );
+  }
+
+  // - SI CONNECTE : RECUPERE DES QUESTIONS ADAPTES A L'HISTORIQUE UTILISATEUR -
+  getAdaptiveQuestions(niveaux?: number[], topics?: string[], size = 10) {
+    const params = new HttpParams()
+      .set('size', size)
+      .set('niveaux', niveaux?.toString() ?? '')
+      .set('topics', topics?.join(',') ?? '');
+
+    return this.http.get<Page<QuestionDTO>>(
+  `${this.url}/adaptive`,
+  { params, withCredentials: true }
+);
   }
 
   // — CRÉER UNE QUESTION —
@@ -60,12 +80,16 @@ export class QuestionService {
   // — METTRE À JOUR UNE QUESTION —
   updateQuestion(dto: QuestionDTO): Observable<QuestionDTO> {
     if (!dto.id) {
-      return throwError(() => new Error('L’ID de la question est requis pour la mise à jour'));
+      return throwError(
+        () => new Error('L’ID de la question est requis pour la mise à jour')
+      );
     }
     return this.http.put<QuestionDTO>(`${this.url}/${dto.id}`, dto).pipe(
       catchError((err) => {
         console.error('updateQuestion a échoué :', err);
-        return throwError(() => new Error('Impossible de mettre à jour la question'));
+        return throwError(
+          () => new Error('Impossible de mettre à jour la question')
+        );
       })
     );
   }
@@ -75,10 +99,15 @@ export class QuestionService {
     return this.http.delete<void>(`${this.url}/${id}`).pipe(
       catchError((err) => {
         console.error('deleteQuestion a échoué :', err);
-        return throwError(() => new Error('Impossible de supprimer la question'));
+        return throwError(
+          () => new Error('Impossible de supprimer la question')
+        );
       })
     );
   }
 
-
+  // - ENVOYER LA SERIE DE RESULTATS AU BACK -
+  sendSeriesResult(attempts: AttemptLight[]) {
+    return this.http.post<void>(`${environment.apiUrl}/series-results`, attempts, { withCredentials: true }   );
+  }
 }

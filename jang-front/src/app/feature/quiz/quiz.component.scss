@@ -11,6 +11,19 @@ body {
   margin-top: 50px;
   }
 
+.banner {
+  width: 100%;
+  color: var(--my-green-color);
+}
+
+.welcome-banner {
+  font-size: 3rem;
+}
+
+.visitoir-banner {
+  font-size: 2rem;
+}
+
 // Ajustements mobiles
 @media screen and (max-width: 768px) {
   .global-container {

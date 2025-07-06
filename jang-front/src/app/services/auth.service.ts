@@ -67,9 +67,8 @@ export class AuthService {
       .get<MeResponse>(`${this.url}/me`, { withCredentials: true })
       .pipe(
         tap((user) => this.currentUserSubject.next(user)),
-        shareReplay(1), // partage la même réponse
+        shareReplay(1), 
         finalize(() => {
-          // libère le mémo en cas d’erreur ou logout
           this.meRequest$ = undefined;
         })
       );

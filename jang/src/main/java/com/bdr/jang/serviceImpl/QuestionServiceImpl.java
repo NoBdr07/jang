@@ -148,7 +148,9 @@ public class QuestionServiceImpl implements QuestionService {
                     long days = c.stat() == null
                             ? Long.MAX_VALUE
                             : ChronoUnit.DAYS.between(
-                                    c.stat().getLastTimeSeen(), today);
+                            c.stat().getLastTimeSeen().toLocalDate(), // ← conversion
+                            today
+                    );
 
                     double base = switch (score) {
                         case -1 -> 1.0;   // jamais vue

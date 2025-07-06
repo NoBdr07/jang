@@ -90,4 +90,13 @@ public class UserServiceImpl implements UserService {
                         "Utilisateur non trouvé pour id = " + id));
     }
 
+    @Override
+    public Long getUserIdByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(User::getId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Utilisateur non trouvé pour username = " + username
+                ));
+    }
+
 }

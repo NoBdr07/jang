@@ -3,6 +3,8 @@ package com.bdr.jang.entities.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "questions")
@@ -29,4 +31,7 @@ public class Question {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id", nullable = false)
     private Topic topic;
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    private List<UserQuestionStat> userQuestionStats;
 }

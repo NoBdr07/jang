@@ -1,3 +1,15 @@
+@if (isVisitor$ | async) {
+  <p class="banner visitor-banner">
+      Mode visiteur – connectez-vous pour enregistrer vos résultats et obtenir des questions adaptées
+    </p>
+} @else {
+  @if (user$ | async; as me) {
+    <p class="banner welcome-banner">
+      Salut {{ me.username }} !
+    </p>
+  }
+}
+
 <div class="global-container">
   <app-filter (selectionChange)="onFilterChange($event)"></app-filter>
 
